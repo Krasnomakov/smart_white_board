@@ -51,6 +51,7 @@ g++ -o cat_n_mouse cat_n_mouse.cpp -I/Lhome/pi/Documents/rpi-rgb-led-matrix/incl
 Various libraries might be required to install for different modes:
 
 sudo apt-get install graphicsmagick libgraphicsmagick++-dev
+
 sudo apt-get install libcurl4-openssl-dev
 
 
@@ -69,6 +70,16 @@ buienradar
 
 Deploy ollama server on the same network and run it accept requests 
 
+
+---
+
+For db_manager to work install SQLite
+Create logs.db
+In it create SensorReadings table 
+
+Then it will be possible to process .txt logs from dataLogs dir into db 
+
+For db cloning need to set up ssh keys - request help 
 
 
 
