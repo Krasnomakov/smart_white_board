@@ -44,6 +44,3 @@ README.md
 	- 5x8.bdf
 	- 6x9.bdf
 
-
-(Current modes in the make file: 
-weather_info_panel ollama-to-led nasa_image updated_ollama)
