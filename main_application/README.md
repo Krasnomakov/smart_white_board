@@ -42,6 +42,12 @@ g++ updated_pong_with_rotary.cpp -o updated_pong_with_rotary -I/Lhome/pi/Documen
 
 g++ wave_gen.cpp -o wave_gen -I/Lhome/pi/Documents/rpi-rgb-led-matrix/include -L/home/pi/Documents/rpi-rgb-led-matrix/lib -lrgbmatrix -lrt -lpthread -lm
 
-g++ -o 2_mice_1_cat 2_mice_1_cat.cpp -I/Lhome/pi/Documents/rpi->
+g++ -o 2_mice_1_cat 2_mice_1_cat.cpp -I/Lhome/pi/Documents/rpi-rgb-led-matrix/include -L/home/pi/Documents/rpi-rgb-led-matrix/lib -lrgbmatrix -lrt -lpthread -lm
 
-g++ -o cat_n_mouse cat_n_mouse.cpp -I/Lhome/pi/Documents/rpi->
+g++ -o cat_n_mouse cat_n_mouse.cpp -I/Lhome/pi/Documents/rpi-rgb-led-matrix/include -L/home/pi/Documents/rpi-rgb-led-matrix/lib -lrgbmatrix -lrt -lpthread -lm
+
+
+----
+
+
+
