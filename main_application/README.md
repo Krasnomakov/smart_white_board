@@ -48,6 +48,29 @@ g++ -o cat_n_mouse cat_n_mouse.cpp -I/Lhome/pi/Documents/rpi-rgb-led-matrix/incl
 
 
 ----
+Various libraries might be required to install for different modes:
+
+sudo apt-get install graphicsmagick libgraphicsmagick++-dev
+sudo apt-get install libcurl4-openssl-dev
+
+
+Then make ollama and nasa image output files, and weather info panel with the makefile: 
+
+make
+
+---
+
+Python dependancies 
+
+buienradar
+
+
+---
+
+Deploy ollama server on the same network and run it accept requests 
+
+
+
 
 
 
