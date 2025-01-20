@@ -8,11 +8,29 @@ rm -rf *
 
 copy all files from main_application into examples-api-use
 
+---
+
+Various libraries might be required to install for different modes:
+
+sudo apt-get install graphicsmagick libgraphicsmagick++-dev
+
+sudo apt-get install libcurl4-openssl-dev
+
 sudo apt update 
 sudo apt install g++
 
+sudo apt-get install libgpiod-dev
+
+cd ~
+git clone https://github.com/WiringPi/WiringPi.git
+cd WiringPi
+git pull origin master
+./build
+
 ---
-Compiling files with 9++ (considering that installation of rpi-rgb-led-matrix library was in Documents) 
+
+Compiling files with g++ (considering that installation of rpi-rgb-led-matrix library was in Documents) 
+Change paths according to your user name and location 
 
 g++ -o master_script_with_buffer master_script_with_buffer.cpp -lgpiod
 
@@ -32,7 +50,7 @@ g++ -o falling_sand_rotary_color falling_sand_rotary_color.cpp -I/Lhome/pi/Docum
 
 g++ -o interactive_weather_rotary interactive_weather_rotary.cpp -I/Lhome/pi/Documents/rpi-rgb-led-matrix/include -L/home/pi/Documents/rpi-rgb-led-matrix/lib -lrgbmatrix -lrt -lm -pthread
 
-g++ -o main_mode main_mode.cpp -I/Lhome/pi/Documents/rpi-rgb-led-matrix/include -L/home/pi/Documents/rpi-rgb-led-matrix/lib -lrgbmatrix -lrt -lm -pthread
+g++ -v -o main_mode_rotary main_mode_rotary.cpp -I/home/pi2/WiringPi/wiringPi -I/home/pi2/Documents/rpi-rgb-led-matrix/include -L/home/pi2/Documents/rpi-rgb-led-matrix/lib -lrt -lm -pthread -lrgbmatrix -lwiringPi
 
 g++ -o sensor_driven_visuals_7 sensor_driven_visuals_7.cpp -I/Lhome/pi/Documents/rpi-rgb-led-matrix/include -L/home/pi/Documents/rpi-rgb-led-matrix/lib -lrgbmatrix -lrt -lm -pthread
 
@@ -46,14 +64,7 @@ g++ -o 2_mice_1_cat 2_mice_1_cat.cpp -I/Lhome/pi/Documents/rpi-rgb-led-matrix/in
 
 g++ -o cat_n_mouse cat_n_mouse.cpp -I/Lhome/pi/Documents/rpi-rgb-led-matrix/include -L/home/pi/Documents/rpi-rgb-led-matrix/lib -lrgbmatrix -lrt -lpthread -lm
 
-
 ----
-Various libraries might be required to install for different modes:
-
-sudo apt-get install graphicsmagick libgraphicsmagick++-dev
-
-sudo apt-get install libcurl4-openssl-dev
-
 
 Then make ollama and nasa image output files, and weather info panel with the makefile: 
 
@@ -65,11 +76,9 @@ Python dependancies
 
 buienradar
 
-
 ---
 
 Deploy ollama server on the same network and run it accept requests 
-
 
 ---
 
@@ -80,8 +89,3 @@ In it create SensorReadings table
 Then it will be possible to process .txt logs from dataLogs dir into db 
 
 For db cloning need to set up ssh keys - request help 
-
-
-
-
-
