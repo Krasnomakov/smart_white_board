@@ -50,7 +50,7 @@ g++ -o falling_sand_rotary_color falling_sand_rotary_color.cpp -I/Lhome/pi/Docum
 
 g++ -o interactive_weather_rotary interactive_weather_rotary.cpp -I/Lhome/pi/Documents/rpi-rgb-led-matrix/include -L/home/pi/Documents/rpi-rgb-led-matrix/lib -lrgbmatrix -lrt -lm -pthread
 
-g++ -v -o main_mode_rotary main_mode_rotary.cpp -I/home/pi2/WiringPi/wiringPi -I/home/pi2/Documents/rpi-rgb-led-matrix/include -L/home/pi2/Documents/rpi-rgb-led-matrix/lib -lrt -lm -pthread -lrgbmatrix -lwiringPi
+g++ -v -o main_mode_rotary main_mode_rotary.cpp -I/home/pi/WiringPi/wiringPi -I/home/pi/Documents/rpi-rgb-led-matrix/include -L/home/pi/Documents/rpi-rgb-led-matrix/lib -lrt -lm -pthread -lrgbmatrix -lwiringPi
 
 g++ -o sensor_driven_visuals_7 sensor_driven_visuals_7.cpp -I/Lhome/pi/Documents/rpi-rgb-led-matrix/include -L/home/pi/Documents/rpi-rgb-led-matrix/lib -lrgbmatrix -lrt -lm -pthread
 
