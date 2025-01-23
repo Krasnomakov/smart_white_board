@@ -691,7 +691,7 @@ int main() {
             sendCommandToFIFO("GET_ALL_SENSORS");
         }
 
-        usleep(100000); // 100 ms
+        usleep(1000000); // 1000 ms
     }
 
     printf("Exiting program. Performing cleanup...\n");
