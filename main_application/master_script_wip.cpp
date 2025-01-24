@@ -451,7 +451,7 @@ int main() {
     const int totalModes = sizeof(modes) / sizeof(modes[0]);
 
     time_t lastDataCollectionTime = 0;
-    const int dataCollectionInterval = 60;  // Collect data every 60 seconds
+    const int dataCollectionInterval = 600;  // Collect data every 600 seconds
 
     signal(SIGPIPE, SIG_IGN);
     struct sigaction sa;
