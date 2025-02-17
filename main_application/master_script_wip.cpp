@@ -13,6 +13,7 @@
 #include <termios.h>
 #include <atomic>
 #include <pthread.h>
+#include <stdarg.h>   // <-- ADDED to fix 'va_start' / 'va_end' errors
 
 // Your existing definitions and includes
 #define UART_DEVICE "/dev/ttyACM0"
@@ -32,6 +33,27 @@ int fifo_fd = -1; // Global variable to keep FIFO open
 // UART variables
 static int master_uart_fd = -1;
 static std::atomic<bool> uart_reader_running{true};
+
+// ---------------------------------------------------------------------
+// NEW HELPER FUNCTION: Logs a message with a timestamp (hh:mm:ss),
+// then flushes immediately to ensure the log writes are not buffered.
+// ---------------------------------------------------------------------
+void logTimestampedMessage(const char *format, ...)
+{
+    va_list args;
+    va_start(args, format);
+
+    time_t now = time(NULL);
+    struct tm* t = localtime(&now);
+
+    // Prepend [HH:MM:SS]
+    fprintf(stdout, "[%02d:%02d:%02d] ", t->tm_hour, t->tm_min, t->tm_sec);
+    vfprintf(stdout, format, args);
+    fprintf(stdout, "\n");
+    fflush(stdout);
+
+    va_end(args);
+}
 
 void createLogDirectory() {
     struct stat st = {0};
@@ -68,6 +90,10 @@ void setupLogging() {
         exit(1);
     }
 
+    // After redirecting stdout/stderr, set line-buffered mode so each
+    // line is flushed immediately.
+    setvbuf(stdout, NULL, _IOLBF, 0);
+
     close(log_fd);
 }
 
@@ -98,7 +124,7 @@ void launchBufferProcess() {
     } else if (buffer_pid < 0) {
         perror("Failed to fork for buffer process");
     } else {
-        printf("Buffer process launched with PID %d.\n", buffer_pid);
+        logTimestampedMessage("Buffer process launched with PID %d.", buffer_pid);
     }
 }
 
@@ -106,7 +132,7 @@ void terminateBufferProcess() {
     if (buffer_pid > 0) {
         kill(buffer_pid, SIGTERM);
         waitpid(buffer_pid, NULL, 0);
-        printf("Buffer process terminated.\n");
+        logTimestampedMessage("Buffer process terminated.");
         buffer_pid = -1;
     }
 }
@@ -135,7 +161,8 @@ void sendCommandToFIFO(const char* command) {
         }
         return;
     }
-    printf("Sent command to FIFO: %s\n", command);
+    // We treat this as a system message so it gets timestamped
+    logTimestampedMessage("Sent command to FIFO: %s", command);
 }
 
 // Setup UART in the master like labyrinth did
@@ -228,7 +255,7 @@ void configureUARTCommands(int mode, int totalModes, const int modes_need_uart[]
 }
 
 void runMode(const char* mode) {
-    printf("Switching to %s mode...\n", mode);
+    logTimestampedMessage("Switching to %s mode...", mode);
     setpgid(0, 0);
     execlp(mode, mode, NULL);
     perror("Failed to launch mode");
@@ -237,39 +264,35 @@ void runMode(const char* mode) {
 
 void terminateMode(pid_t child_pid) {
     if (child_pid > 0) {
-        printf("Attempting to terminate child process with PID %d\n", child_pid);
+        logTimestampedMessage("Attempting to terminate child process with PID %d", child_pid);
         if (kill(child_pid, 0) == 0) {
             if (kill(child_pid, SIGTERM) == 0) {
                 waitpid(child_pid, NULL, 0);
-                printf("Child process terminated successfully.\n");
+                logTimestampedMessage("Child process terminated successfully.");
             } else {
                 perror("Failed to terminate child process");
             }
         } else {
-            printf("Child process with PID %d is not running.\n", child_pid);
+            logTimestampedMessage("Child process with PID %d is not running.", child_pid);
         }
     } else {
-        printf("No active child process to terminate.\n");
+        logTimestampedMessage("No active child process to terminate.");
     }
 }
 
 void setUartPermissions() {
-    printf("Setting permissions for %s...\n", UART_DEVICE);
+    logTimestampedMessage("Setting permissions for %s...", UART_DEVICE);
     int ret = system("sudo chmod 666 /dev/ttyACM0");
     if (ret != 0) {
         fprintf(stderr, "Failed to set permissions for %s. Exiting.\n", UART_DEVICE);
         exit(1);
     }
-    printf("Permissions set successfully.\n");
+    logTimestampedMessage("Permissions set successfully.");
 }
 
 void logModeSwitch(const char* modeName) {
-    char logEntry[256];
-    time_t now = time(NULL);
-    struct tm *t = localtime(&now);
-    snprintf(logEntry, sizeof(logEntry), "[%02d:%02d:%02d] Mode switched to: %s",
-             t->tm_hour, t->tm_min, t->tm_sec, modeName);
-    printf("%s\n", logEntry);
+    // Reuse a separate function for mode switching logs
+    logTimestampedMessage("Mode switched to: %s", modeName);
 }
 
 void launchOllamaMode() {
@@ -284,7 +307,7 @@ void launchOllamaMode() {
     } else if (ollama_pid < 0) {
         perror("Failed to fork for updated_ollama");
     } else {
-        printf("updated_ollama launched with PID %d.\n", ollama_pid);
+        logTimestampedMessage("updated_ollama launched with PID %d.", ollama_pid);
     }
 }
 
@@ -292,7 +315,7 @@ void terminateOllamaMode() {
     if (ollama_pid > 0) {
         kill(ollama_pid, SIGTERM);
         waitpid(ollama_pid, NULL, 0);
-        printf("updated_ollama terminated.\n");
+        logTimestampedMessage("updated_ollama terminated.");
         ollama_pid = -1;
     }
 }
@@ -307,7 +330,7 @@ void launchWeatherMode(pid_t *child_pid) {
     } else if (weather_py_pid < 0) {
         perror("Failed to fork for buienRadarToCsv.py");
     } else {
-        printf("buienRadarToCsv.py launched with PID %d.\n", weather_py_pid);
+        logTimestampedMessage("buienRadarToCsv.py launched with PID %d.", weather_py_pid);
     }
 
     *child_pid = fork();
@@ -318,7 +341,7 @@ void launchWeatherMode(pid_t *child_pid) {
         perror("Failed to fork for weather_info_panel");
         *child_pid = -1;
     } else {
-        printf("weather_info_panel launched with PID %d.\n", *child_pid);
+        logTimestampedMessage("weather_info_panel launched with PID %d.", *child_pid);
     }
 }
 
@@ -326,20 +349,18 @@ void terminateWeatherMode(pid_t child_pid) {
     terminateMode(child_pid);
 
     if (weather_py_pid > 0) {
-        printf("Attempting to terminate buienRadarToCsv.py with PID %d\n", weather_py_pid);
+        logTimestampedMessage("Attempting to terminate buienRadarToCsv.py with PID %d", weather_py_pid);
         if (kill(weather_py_pid, 0) == 0) {
             if (kill(weather_py_pid, SIGTERM) == 0) {
                 waitpid(weather_py_pid, NULL, 0);
-                printf("buienRadarToCsv.py terminated successfully.\n");
+                logTimestampedMessage("buienRadarToCsv.py terminated successfully.");
             } else {
                 perror("Failed to terminate buienRadarToCsv.py");
             }
         } else {
-            printf("buienRadarToCsv.py with PID %d is not running.\n", weather_py_pid);
+            logTimestampedMessage("buienRadarToCsv.py with PID %d is not running.", weather_py_pid);
         }
         weather_py_pid = -1;
-    } else {
-        printf("No active buienRadarToCsv.py process to terminate.\n");
     }
 }
 
@@ -359,7 +380,7 @@ void launchNasaImageMode(pid_t *child_pid) {
     } else if (nasa_py_pid < 0) {
         perror("Failed to fork for nasa_image.py");
     } else {
-        printf("nasa_image.py launched with PID %d.\n", nasa_py_pid);
+        logTimestampedMessage("nasa_image.py launched with PID %d.", nasa_py_pid);
     }
 
     *child_pid = fork();
@@ -370,7 +391,7 @@ void launchNasaImageMode(pid_t *child_pid) {
         perror("Failed to fork for nasa_image");
         *child_pid = -1;
     } else {
-        printf("nasa_image launched with PID %d.\n", *child_pid);
+        logTimestampedMessage("nasa_image launched with PID %d.", *child_pid);
     }
 }
 
@@ -378,20 +399,18 @@ void terminateNasaImageMode(pid_t child_pid) {
     terminateMode(child_pid);
 
     if (nasa_py_pid > 0) {
-        printf("Attempting to terminate nasa_image.py with PID %d\n", nasa_py_pid);
+        logTimestampedMessage("Attempting to terminate nasa_image.py with PID %d", nasa_py_pid);
         if (kill(nasa_py_pid, 0) == 0) {
             if (kill(nasa_py_pid, SIGTERM) == 0) {
                 waitpid(nasa_py_pid, NULL, 0);
-                printf("nasa_image.py terminated successfully.\n");
+                logTimestampedMessage("nasa_image.py terminated successfully.");
             } else {
                 perror("Failed to terminate nasa_image.py");
             }
         } else {
-            printf("nasa_image.py with PID %d is not running.\n", nasa_py_pid);
+            logTimestampedMessage("nasa_image.py with PID %d is not running.", nasa_py_pid);
         }
         nasa_py_pid = -1;
-    } else {
-        printf("No active nasa_image.py process to terminate.\n");
     }
 }
 
@@ -502,7 +521,8 @@ int main() {
             perror("Failed to fork for mode");
             child_pid = -1;
         } else {
-            printf("Forked child process with PID %d for mode '%s'\n", child_pid, modes[currentMode]);
+            logTimestampedMessage("Forked child process with PID %d for mode '%s'",
+                                  child_pid, modes[currentMode]);
         }
     }
 
@@ -593,8 +613,8 @@ int main() {
                             perror("Failed to fork for mode");
                             child_pid = -1;
                         } else {
-                            printf("Forked child process with PID %d for mode '%s'\n",
-                                   child_pid, modes[currentMode]);
+                            logTimestampedMessage("Forked child process with PID %d for mode '%s'",
+                                                  child_pid, modes[currentMode]);
                         }
                     }
                     gpiod_line_set_value(led_line, 0);
@@ -607,7 +627,7 @@ int main() {
         int status;
         pid_t pid = waitpid(-1, &status, WNOHANG);
         if (pid > 0) {
-            printf("Child process %d exited with status %d\n", pid, status);
+            logTimestampedMessage("Child process %d exited with status %d", pid, status);
 
             if (pid == child_pid) {
                 // -----------------------------------------------------------------
@@ -618,7 +638,7 @@ int main() {
                         int code = WEXITSTATUS(status);
                         if (code >= 100 && code < 200) {
                             int nextModeIndex = code - 100;
-                            printf("Main mode exit => user requested mode index %d.\n", nextModeIndex);
+                            logTimestampedMessage("Main mode exit => user requested mode index %d.", nextModeIndex);
 
                             sendCommandToFIFO("RESET");
                             currentMode = nextModeIndex;
@@ -642,21 +662,21 @@ int main() {
                                     perror("Failed to fork for next mode");
                                     child_pid = -1;
                                 } else {
-                                    printf("Forked child process with PID %d for '%s'\n",
-                                           child_pid, modes[currentMode]);
+                                    logTimestampedMessage("Forked child process with PID %d for '%s'",
+                                                          child_pid, modes[currentMode]);
                                 }
                             }
                         }
                         else {
                             // Otherwise, main mode exited with some different code,
                             // fallback to just staying in main mode or do nothing
-                            printf("Main mode child exited with code %d (not in [100..199]).\n", code);
-                            child_pid = -1; 
+                            logTimestampedMessage("Main mode child exited with code %d (not in [100..199]).", code);
+                            child_pid = -1;
                         }
                     }
                     else {
                         // If it didn't exit normally, just mark child_pid dead
-                        printf("Main mode child died abnormally.\n");
+                        logTimestampedMessage("Main mode child died abnormally.");
                         child_pid = -1;
                     }
                 }
@@ -667,34 +687,37 @@ int main() {
             }
             else if (pid == buffer_pid) {
                 buffer_pid = -1;
-                printf("Buffer process exited unexpectedly. Relaunching...\n");
+                logTimestampedMessage("Buffer process exited unexpectedly. Relaunching...");
                 launchBufferProcess();
             }
             else if (pid == ollama_pid) {
                 ollama_pid = -1;
-                printf("updated_ollama process exited.\n");
+                logTimestampedMessage("updated_ollama process exited.");
             }
             else if (pid == weather_py_pid) {
                 weather_py_pid = -1;
-                printf("buienRadarToCsv.py process exited.\n");
+                logTimestampedMessage("buienRadarToCsv.py process exited.");
             }
             else if (pid == nasa_py_pid) {
                 nasa_py_pid = -1;
-                printf("nasa_image.py process exited.\n");
+                logTimestampedMessage("nasa_image.py process exited.");
             }
         }
 
         time_t currentTime = time(NULL);
         if (difftime(currentTime, lastDataCollectionTime) >= dataCollectionInterval) {
             lastDataCollectionTime = currentTime;
-            // Ping the sensors periodically to ensure data flow
-            sendCommandToFIFO("GET_ALL_SENSORS");
+
+            // ------------------------------------------------------------
+            // DO NOT UNCOMMENT THIS LINE:
+            // sendCommandToFIFO("GET_ALL_SENSORS");
+            // ------------------------------------------------------------
         }
 
-        usleep(1000000); // 1000 ms
+        usleep(100000); // 100 ms
     }
 
-    printf("Exiting program. Performing cleanup...\n");
+    logTimestampedMessage("Exiting program. Performing cleanup...");
 
     gpiod_line_release(button_line);
     gpiod_line_release(led_line);
@@ -721,6 +744,6 @@ int main() {
     pthread_join(uart_thread, NULL);
     if (master_uart_fd >= 0) close(master_uart_fd);
 
-    printf("Cleanup complete. Program exited.\n");
+    logTimestampedMessage("Cleanup complete. Program exited.");
     return 0;
 }
