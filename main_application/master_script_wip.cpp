@@ -708,10 +708,9 @@ int main() {
         if (difftime(currentTime, lastDataCollectionTime) >= dataCollectionInterval) {
             lastDataCollectionTime = currentTime;
 
-            // ------------------------------------------------------------
-            // DO NOT UNCOMMENT THIS LINE:
-            // sendCommandToFIFO("GET_ALL_SENSORS");
-            // ------------------------------------------------------------
+            
+            sendCommandToFIFO("GET_ALL_SENSORS");
+       
         }
 
         usleep(100000); // 100 ms
