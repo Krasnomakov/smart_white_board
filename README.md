@@ -11,11 +11,13 @@ Install rpi-rgb-matrix-library (in Documents)
 Get to examples
 
 Delete all files inside 
+
 Copy main application there 
 
 Currently need to manually compile each file with terminal commands provided in readme
 
 It is possinle to change number of available modes in main script and do not compile 
+
 Code should work even if some modes are not responding - simply switch to the next mode 
 
 
