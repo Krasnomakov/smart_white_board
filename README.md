@@ -9,10 +9,16 @@ To deploy download the repo
 Install rpi-rgb-matrix-library (in Documents)
 
 Get to examples
+
 Delete all files inside 
 Copy main application there 
 
-And manually compile each file with terminal commands provided in readme
+Currently need to manually compile each file with terminal commands provided in readme
+
+It is possinle to change number of available modes in main script and do not compile 
+Code should work even if some modes are not responding - simply switch to the next mode 
+
+
 It is possible that some libraries you might need to install are not listed
 If facing trouble - copy errors output from terminal to duck.ai and debug (delete your username) 
 
