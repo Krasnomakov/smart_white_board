@@ -1,3 +1,31 @@
+ 
+Ambient AIoT Black Board Codebase 
+
+Tested on Raspberry Pi 4, Bookworm OS for main application 
+Raspberry Pi Pico w, Circuitpython for pico code 
+
+--
+
+To deploy download the repo. 
+Install rpi-rgb-matrix-library (in Documents) 
+
+Get to examples
+Delete all files inside 
+Copy main application there 
+
+And manually compile each file with terminal commands provided in readme
+It is possible that some libraries you might need to install
+If facing trouble - copy errors output from terminal to duck.ai and debug (delete your username) 
+
+Was successfully copied to new setup with pi 4 and pi pico 
+Always keep pico connected before booting the pi 
+It ensures that you get pico on port 0 
+
+It still can go to port 1 sometimes 
+Current code implementation requires it to be on 0 
+
+--
+
 Repo structure  
 
 README.md
