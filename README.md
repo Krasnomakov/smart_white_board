@@ -1,4 +1,4 @@
- Ambient AIoT Black Board Codebase 
+ Ambient AIoT LED Black Board Codebase 
 
 Tested on Raspberry Pi 4, Bookworm OS for main application 
 Raspberry Pi Pico w, Circuitpython for pico code 
