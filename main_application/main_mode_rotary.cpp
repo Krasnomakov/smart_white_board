@@ -1,4 +1,4 @@
-#include </home/pi/WiringPi/wiringPi/wiringPi.h>               // For GPIO access
+#include </home/pi/WiringPi/wiringPi/wiringPi.h>  // For GPIO access
 #include "../include/led-matrix.h"
 #include "../include/graphics.h"
 #include <chrono>
@@ -38,20 +38,69 @@ enum Component {
     BOTTOM_LINE,
     SIDE_TOP_SQUARE,
     SIDE_BOTTOM_SQUARE,
-    NUM_COMPONENTS
+    NUM_COMPONENTS // 5 total
 };
 
-// Global selection
 volatile bool interrupt_received = false;
 Component currentSelection = TOP_LINE;
 
-// FIFO path (taken from "pong" code style)
-static const char* DATA_FIFO_PATH = "/tmp/mode_fifo";
+// FIFO path
+static const char* COMMAND_FIFO_PATH = "/tmp/uart_fifo";
+static const char* DATA_FIFO_PATH    = "/tmp/mode_fifo";
 int last_encoder_value = 0;  // We'll track the last rotary-encoder value
 
 // GPIO pins for your IR sensors
 static const int SENSOR_TOP_PIN = 22;    // Affects top square
 static const int SENSOR_BOTTOM_PIN = 27; // Affects bottom square
+
+// -----------------------------------------------------------------------------
+// For random 5-mode selection
+// -----------------------------------------------------------------------------
+static const int MAIN_MODE_INDEX = 17;  // "main_mode_rotary" index in the master’s mode array
+static const int TOTAL_MODES = 19;      // total modes in the system
+
+// We'll store which "real mode" each of the 5 areas is assigned to (except
+// the bottom‐right square now allows *manual* selection).
+static int g_assignedModes[NUM_COMPONENTS];
+
+// This new variable tracks the *manual* mode index for the bottom‐right square.
+static int g_bottomSquareModeIndex = 0;
+
+static int cmd_fd = -1;
+
+void openCommandFIFOIfNeeded() {
+    if (cmd_fd == -1) {
+        cmd_fd = open(COMMAND_FIFO_PATH, O_WRONLY | O_NONBLOCK);
+        if (cmd_fd == -1) {
+            perror("Failed to open COMMAND_FIFO_PATH for writing");
+            // Possibly return or handle error
+        }
+    }
+}
+
+// ADDED: a function to pick 5 random distinct modes (excluding MAIN_MODE_INDEX)
+static void AssignRandomModes() {
+    // Build a list of possible mode indices
+    std::vector<int> available;
+    available.reserve(TOTAL_MODES - 1);
+    for (int i = 0; i < TOTAL_MODES; i++) {
+        if (i != MAIN_MODE_INDEX) { 
+            available.push_back(i);
+        }
+    }
+    // Shuffle
+    std::random_shuffle(available.begin(), available.end());
+
+    // Take the first 5 for our areas
+    for (int i = 0; i < NUM_COMPONENTS; i++) {
+        g_assignedModes[i] = available[i];
+    }
+    fprintf(stderr, "Assigned 5 random modes: ");
+    for (int i = 0; i < NUM_COMPONENTS; i++) {
+        fprintf(stderr, "%d ", g_assignedModes[i]);
+    }
+    fprintf(stderr, "\n");
+}
 
 // -----------------------------------------------------------------------------
 // Signal handler
@@ -68,6 +117,7 @@ int getCurrentDayOfWeek() {
     auto now_time = std::chrono::system_clock::to_time_t(now);
     std::tm* localTime = std::localtime(&now_time);
     int day = localTime->tm_wday; 
+    // Re-map Sunday=0 => Monday=0, Tuesday=1, ...
     return (day + 6) % 7;
 }
 
@@ -120,44 +170,46 @@ void drawHighlightOverlay(Canvas* canvas, int x, int y, int width, int height) {
 // Top row: day-of-week progress bar
 // -----------------------------------------------------------------------------
 void renderProgressBar(Canvas* canvas, Font &font) {
-    int currentDay = getCurrentDayOfWeek();
+    // 1) Determine which day of the week is "current"
+    int currentDay = getCurrentDayOfWeek();  
 
-    // Colors for past, current, future
+    // 2) Define the colors for past, current, future days
     Color pastColor(153, 0, 153);
     Color currentColor(204, 0, 102);
     Color futureColor(255, 165, 0);
 
-    const int daysInWeek = 7;
-    int totalBarWidth = (MATRIX_WIDTH - SIDE_COLUMN_WIDTH);
-    int segmentWidth = totalBarWidth / daysInWeek; 
+    // 3) The total width of the “day bar” is 48 (64 total minus 16 for side column).
+    //    We'll split it into 7 segments: (6,6,6,9,6,6,9) => total 48
+    static const int daysInWeek = 7;
+    static const int segmentWidths[daysInWeek] = {6, 6, 6, 9, 6, 6, 9};
 
-    // Fill each day block
+    int currentX = 0;
     for (int i = 0; i < daysInWeek; i++) {
         Color color = (i < currentDay)
             ? pastColor
             : ((i == currentDay) ? currentColor : futureColor);
 
-        int startX = i * segmentWidth;
-        int endX   = (i == daysInWeek - 1) 
-                   ? totalBarWidth
-                   : (i+1)*segmentWidth;
+        int dayWidth = segmentWidths[i];
+        int endX = currentX + dayWidth;
 
-        for (int x = startX; x < endX; x++) {
+        for (int x = currentX; x < endX; x++) {
             for (int y = 0; y < TOP_ROW_HEIGHT; y++) {
                 canvas->SetPixel(x, y, color.r, color.g, color.b);
             }
         }
+        currentX = endX;
     }
 
-    // Days-of-week
+    // 4) Days-of-week map: index -> label
     static const std::map<int, std::string> daysOfWeek = {
-        {0, "M"}, {1, "T"}, {2, "W"}, {3, "TH"},
-        {4, "F"}, {5, "S"}, {6, "SU"}
+        {0, "M"},  {1, "T"},  {2, "W"}, 
+        {3, "TH"}, {4, "F"},  {5, "S"}, 
+        {6, "SU"}
     };
     std::string dayAbbrev = daysOfWeek.at(currentDay);
 
-    // Render the day text
-    Color textColor(0,255,0);
+    // 5) Draw text label for the current day
+    Color textColor(0, 255, 0);
     rgb_matrix::DrawText(canvas, font,
                          1, TOP_ROW_HEIGHT - 1,
                          textColor, nullptr,
@@ -165,7 +217,7 @@ void renderProgressBar(Canvas* canvas, Font &font) {
 }
 
 // -----------------------------------------------------------------------------
-// Middle row: moon phase bar with red pixel + opacity effect
+// Middle row: moon phase bar with a red pixel + opacity effect
 // -----------------------------------------------------------------------------
 void renderMoonPhase(Canvas* canvas) {
     int moonPhase = getMoonPhase();
@@ -178,10 +230,8 @@ void renderMoonPhase(Canvas* canvas) {
     int yStart = TOP_ROW_HEIGHT;
 
     for (int i = 0; i < phases; i++) {
-        // Opacity for brightness
         uint8_t brightness = calculateOpacity(moonPhase, i, phases);
 
-        // Scale color by brightness
         auto scaleColor = [&](const Color &c) {
             return Color(
                 (uint8_t)((c.r * brightness)/255),
@@ -189,18 +239,16 @@ void renderMoonPhase(Canvas* canvas) {
                 (uint8_t)((c.b * brightness)/255)
             );
         };
-        // Active vs. inactive base color
         Color base = (i == moonPhase) ? baseActive : baseInactive;
         Color fillColor = scaleColor(base);
 
-        // Draw the bar
         for (int x = i * segmentWidth; x < (i+1)*segmentWidth; x++) {
             for (int y = yStart; y < yStart + MID_ROW_HEIGHT; y++) {
                 canvas->SetPixel(x, y, fillColor.r, fillColor.g, fillColor.b);
             }
         }
 
-        // Draw a single red pixel in the center with the same brightness
+        // Draw a red pixel in the corner to illustrate phase
         uint8_t redVal = brightness; 
         if (redVal > 0) {
             int px = i * segmentWidth + (segmentWidth / 10);
@@ -217,11 +265,11 @@ void renderBottomRow(Canvas* canvas, Font &smallFont) {
     std::time_t now = std::time(nullptr);
     std::tm* localTime = std::localtime(&now);
 
-    char timeStr[9];       // "HH:MM:SS"
+    char timeStr[9];  // "HH:MM:SS"
     std::strftime(timeStr, sizeof(timeStr), "%H:%M:%S", localTime);
 
-    // Modify date format to show only the last two digits of the year: "MM.DD.YY"
-    char dateStr[9];       
+    // show last two digits of year => "MM.DD.YY"
+    char dateStr[9];
     std::strftime(dateStr, sizeof(dateStr), "%m.%d.%y", localTime);
 
     Color textColor(255,255,0);
@@ -254,14 +302,11 @@ struct SquareAnimation {
     static const int MAX_W = SIDE_COLUMN_WIDTH;
     static const int MAX_H = MATRIX_HEIGHT/2; 
 
-    // Holds pixel intensities or partial data used in animations
     uint8_t pixels[MAX_W][MAX_H];
 
     int   circleRadius;
     bool  growing;
     int   partX, partY;  // for floating particle
-
-    // factor to influence color/brightness (or other parameters).
     float influenceFactor;
 };
 
@@ -269,9 +314,9 @@ SquareAnimation topSquareAnim;
 SquareAnimation bottomSquareAnim;
 
 void pickRandomAnimation(SquareAnimation &anim) {
-    anim.type = (AnimationType)(rand() % ANIM_COUNT);
+    anim.type       = (AnimationType)(rand() % ANIM_COUNT);
     anim.frameCount = 0;
-    // reset relevant fields
+
     for (int x = 0; x < SquareAnimation::MAX_W; x++) {
         for (int y = 0; y < SquareAnimation::MAX_H; y++) {
             anim.pixels[x][y] = 0;
@@ -288,9 +333,7 @@ void initSquareAnimation(SquareAnimation &anim) {
     pickRandomAnimation(anim);
 }
 
-// -----------------------------------------------------------------------------
-// Animation update functions
-// -----------------------------------------------------------------------------
+// Animation updaters
 static void updateFallingSand(SquareAnimation &anim) {
     for (int y = SquareAnimation::MAX_H - 2; y >= 0; y--) {
         for (int x = 0; x < SquareAnimation::MAX_W; x++) {
@@ -304,7 +347,6 @@ static void updateFallingSand(SquareAnimation &anim) {
     }
     int spawnThreshold = (int)(10 / std::max(1.0f, anim.influenceFactor));
     if (spawnThreshold < 1) spawnThreshold = 1; 
-
     if (rand() % spawnThreshold == 0) {
         int rx = rand() % SquareAnimation::MAX_W;
         anim.pixels[rx][0] = 128; 
@@ -313,7 +355,6 @@ static void updateFallingSand(SquareAnimation &anim) {
 
 static void updateFloatingParticle(SquareAnimation &anim) {
     int steps = (int)std::ceil(anim.influenceFactor);
-
     for (int s = 0; s < steps; s++) {
         int dir = rand() % 4;
         int nx = anim.partX;
@@ -322,7 +363,6 @@ static void updateFloatingParticle(SquareAnimation &anim) {
         if (dir == 1) nx++;
         if (dir == 2) ny--;
         if (dir == 3) ny++;
-
         if (nx >= 0 && nx < SquareAnimation::MAX_W) anim.partX = nx;
         if (ny >= 0 && ny < SquareAnimation::MAX_H) anim.partY = ny;
     }
@@ -371,14 +411,11 @@ void updateSquareAnimation(SquareAnimation &anim) {
     case ANIM_FLOATING_PARTICLE:    updateFloatingParticle(anim);   break;
     case ANIM_RANDOM_FADING_PIXELS: updateRandomFadingPixels(anim); break;
     case ANIM_PULSATING_CIRCLE:     updatePulsatingCircle(anim);    break;
-    default:
-        break;
+    default: break;
     }
 }
 
-// -----------------------------------------------------------------------------
-// Rendering each square
-// -----------------------------------------------------------------------------
+// Rendering the square animation
 void renderSquareAnimation(Canvas* canvas, const SquareAnimation &anim, int originX, int originY) {
     switch (anim.type) {
     case ANIM_FALLING_SAND: {
@@ -392,13 +429,13 @@ void renderSquareAnimation(Canvas* canvas, const SquareAnimation &anim, int orig
                 }
             }
         }
-    }   break;
+    } break;
 
     case ANIM_FLOATING_PARTICLE: {
         int r = (int)(255 * anim.influenceFactor);
         if (r > 255) r = 255;
         canvas->SetPixel(originX + anim.partX, originY + anim.partY, r, 0, 0);
-    }   break;
+    } break;
 
     case ANIM_RANDOM_FADING_PIXELS: {
         for (int x = 0; x < SquareAnimation::MAX_W; x++) {
@@ -411,7 +448,7 @@ void renderSquareAnimation(Canvas* canvas, const SquareAnimation &anim, int orig
                 }
             }
         }
-    }   break;
+    } break;
 
     case ANIM_PULSATING_CIRCLE: {
         int g = (int)(255 * anim.influenceFactor);
@@ -430,20 +467,45 @@ void renderSquareAnimation(Canvas* canvas, const SquareAnimation &anim, int orig
                 canvas->SetPixel(px, py, 0, g, 0);
             }
         }
-    }   break;
+    } break;
 
-    default:
-        break;
+    default: break;
     }
 }
 
 // -----------------------------------------------------------------------------
-// Forward declarations
+// Draw (modeIndex+1) white pixels in the center of the bottom‐right square
 // -----------------------------------------------------------------------------
-void renderProgressBar(Canvas* canvas, Font &font);
-void renderMoonPhase(Canvas* canvas);
-void drawHighlightOverlay(Canvas* canvas, int x, int y, int w, int h);
-void renderBottomRow(Canvas* canvas, Font &smallFont);
+void drawBottomSquareModeIndicator(Canvas* canvas, int originX, int originY, int modeIndex) {
+    // Clear that square or fill with some background color
+    for (int x = originX; x < originX + SIDE_COLUMN_WIDTH; x++) {
+        for (int y = originY; y < originY + (MATRIX_HEIGHT/2); y++) {
+            canvas->SetPixel(x, y, 0, 0, 0);
+        }
+    }
+
+    int n = modeIndex + 1;  // how many pixels to light
+    int regionW = SIDE_COLUMN_WIDTH;
+    int regionH = MATRIX_HEIGHT / 2;
+
+    // We'll place up to 19 pixels in a 5x4 block near the center. That block = 20 potential spots.
+    int blockW = 5;
+    int blockH = 4;
+    int startX = originX + (regionW/2) - (blockW/2);
+    int startY = originY + (regionH/2) - (blockH/2);
+
+    Color c(255,255,255);
+
+    int placed = 0;
+    for (int row = 0; row < blockH && placed < n; row++) {
+        for (int col = 0; col < blockW && placed < n; col++) {
+            int px = startX + col;
+            int py = startY + row;
+            canvas->SetPixel(px, py, c.r, c.g, c.b);
+            placed++;
+        }
+    }
+}
 
 // -----------------------------------------------------------------------------
 // The main layout function
@@ -471,31 +533,31 @@ void renderLayout(Canvas* canvas, Font &font, Font &smallFont) {
             canvas->SetPixel(x, y, sideColor.r, sideColor.g, sideColor.b);
         }
     }
+
     int halfH = MATRIX_HEIGHT / 2;
 
-    // 5) Update & render top square
+    // 5) Top square (always animate)
     updateSquareAnimation(topSquareAnim);
     renderSquareAnimation(canvas, topSquareAnim, SECTION_WIDTH, 0);
 
-    // 6) Update & render bottom square
-    updateSquareAnimation(bottomSquareAnim);
-    renderSquareAnimation(canvas, bottomSquareAnim, SECTION_WIDTH, halfH);
+    // 6) Bottom square 
+    // If *not* currently selected, show animation; 
+    // if selected => show the "mode index" indicator.
+    if (currentSelection == SIDE_BOTTOM_SQUARE) {
+        drawBottomSquareModeIndicator(canvas, SECTION_WIDTH, halfH, g_bottomSquareModeIndex);
+    } else {
+        updateSquareAnimation(bottomSquareAnim);
+        renderSquareAnimation(canvas, bottomSquareAnim, SECTION_WIDTH, halfH);
+    }
 
-    // -------------------------------------------------------------------------
-    // 7) Draw highlight overlays LAST so they're not overwritten
-    // -------------------------------------------------------------------------
-    // We'll do full row width for TOP_LINE and MID_LINE, 
-    // but keep BOTTOM_LINE's highlight within the main 48 columns.
+    // 7) Draw highlight overlays for whichever area is selected
     if (currentSelection == TOP_LINE) {
-        // Full top row width = 64
         drawHighlightOverlay(canvas, 0, 0, SECTION_WIDTH, TOP_ROW_HEIGHT);
     }
     else if (currentSelection == MID_LINE) {
-        // Full mid row width = 64
         drawHighlightOverlay(canvas, 0, TOP_ROW_HEIGHT, SECTION_WIDTH, MID_ROW_HEIGHT);
     }
     else if (currentSelection == BOTTOM_LINE) {
-        // Keep highlight to the main 48 columns
         drawHighlightOverlay(canvas, 0, TOP_ROW_HEIGHT + MID_ROW_HEIGHT, SECTION_WIDTH, BOTTOM_ROW_HEIGHT);
     }
     else if (currentSelection == SIDE_TOP_SQUARE) {
@@ -514,28 +576,49 @@ void readFromFIFO(int fifo_fd) {
     int bytes_read = read(fifo_fd, buffer, sizeof(buffer) - 1);
     if (bytes_read > 0) {
         buffer[bytes_read] = '\0';
-        // Example line: "Rotary Encoder Position: 123"
+
         int encoder_value;
         if (sscanf(buffer, "Rotary Encoder Position: %d", &encoder_value) == 1) {
             int diff = encoder_value - last_encoder_value;
             last_encoder_value = encoder_value;
 
-            // Move selection up or down depending on diff
             if (diff != 0) {
-                while (diff > 0) {
-                    currentSelection = (Component)((int)currentSelection + 1);
-                    if (currentSelection >= NUM_COMPONENTS) {
-                        currentSelection = (Component)(currentSelection - NUM_COMPONENTS);
+                // If we are in bottom-right square, the knob changes the mode index
+                // rather than cycling among components.
+                if (currentSelection == SIDE_BOTTOM_SQUARE) {
+                    // Wrap around [0..18]
+                    g_bottomSquareModeIndex = (g_bottomSquareModeIndex + diff + TOTAL_MODES) % TOTAL_MODES;
+                } else {
+                    // Normal approach: cycle selection among 5 areas
+                    while (diff > 0) {
+                        currentSelection = (Component)((int)currentSelection + 1);
+                        if (currentSelection >= NUM_COMPONENTS) {
+                            currentSelection = (Component)(currentSelection - NUM_COMPONENTS);
+                        }
+                        diff--;
                     }
-                    diff--;
-                }
-                while (diff < 0) {
-                    currentSelection = (Component)((int)currentSelection - 1);
-                    if (currentSelection < 0) {
-                        currentSelection = (Component)(currentSelection + NUM_COMPONENTS);
+                    while (diff < 0) {
+                        currentSelection = (Component)((int)currentSelection - 1);
+                        if (currentSelection < 0) {
+                            currentSelection = (Component)(currentSelection + NUM_COMPONENTS);
+                        }
+                        diff++;
                     }
-                    diff++;
                 }
+            }
+        }
+        // Check for button press
+        else if (strstr(buffer, "Button is pressed") != NULL) {
+            int areaIndex = (int)currentSelection;
+            // If pressing button in bottom-right square => use g_bottomSquareModeIndex
+            if (areaIndex == SIDE_BOTTOM_SQUARE) {
+                exit(100 + g_bottomSquareModeIndex);
+            } else {
+                // Old approach: random assignment decides the mode
+                int chosenModeIndex = g_assignedModes[areaIndex];
+                fprintf(stderr, "[MAIN_MODE] User selected area %d => real mode %d\n",
+                        areaIndex, chosenModeIndex);
+                exit(100 + chosenModeIndex);
             }
         }
         else {
@@ -597,9 +680,12 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // 6) Initialize your side-square animations
+    // 6) Initialize side-square animations
     initSquareAnimation(topSquareAnim);
     initSquareAnimation(bottomSquareAnim);
+
+    // ADDED: Assign 5 random modes for the other areas
+    AssignRandomModes();
 
     // 7) Create an offscreen "frame canvas"
     FrameCanvas *offscreen = matrix->CreateFrameCanvas();
@@ -620,7 +706,7 @@ int main(int argc, char* argv[]) {
 
     // 9) Main loop
     while (!interrupt_received) {
-        // -- Read new sensor states
+        // Read new sensor states
         int newTopSensor    = digitalRead(SENSOR_TOP_PIN);
         int newBottomSensor = digitalRead(SENSOR_BOTTOM_PIN);
 
@@ -630,27 +716,26 @@ int main(int argc, char* argv[]) {
             else                   topSquareAnim.influenceFactor = 1.0f;
             oldTopSensor = newTopSensor;
         }
-
         if (newBottomSensor != oldBottomSensor) {
             if (newBottomSensor == 1) bottomSquareAnim.influenceFactor = 2.0f;
             else                      bottomSquareAnim.influenceFactor = 1.0f;
             oldBottomSensor = newBottomSensor;
         }
 
-        // -- Read from FIFO for rotary updates
+        // Read from FIFO for rotary + button updates
         readFromFIFO(fifo_fd);
 
-        // -- Clear offscreen
+        // Clear offscreen
         offscreen->Clear();
 
-        // -- Render layout (progress bars, squares, etc.)
+        // Render entire layout
         renderLayout(offscreen, font, smallFont);
 
-        // -- Swap buffers
+        // Swap buffers
         offscreen = matrix->SwapOnVSync(offscreen);
 
-        // -- Slight delay
-        usleep(100 * 1000); // 100 ms
+        // Slight delay (100 ms)
+        usleep(100 * 1000);
     }
 
     // Cleanup
