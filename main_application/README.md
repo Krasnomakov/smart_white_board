@@ -324,6 +324,33 @@ Below is the **step-by-step** to integrate a brand-new mode:
 2. **Implement Data Handling**  
    - If your mode needs sensors or rotary encoders, parse lines from the FIFO with a function like `readFromFIFO()`.  
    - If you only want certain lines (like sensor data), handle them specifically.
+  ### Specifying Sensors for a New Mode
+
+Each mode may require specific sensors (e.g., rotary encoders, optical sensors, temperature, microphone, button). The master script sends a command through the `COMMAND_FIFO_PATH` to configure which sensor streams should be enabled.
+
+This logic is implemented in the `configureUARTCommands()` function in `master_script.cpp`:
+
+if (modes_need_uart[mode] == 0) {
+    sendCommandToFIFO("RESET");
+} else if (mode == 3 || mode == 13 || mode == 15) {
+    sendCommandToFIFO("RESET OPTICAL TEMPERATURE MICROPHONE ROTARY STREAM");
+} else if (mode == 5 || mode == 16 || mode == 2) {
+    sendCommandToFIFO("RESET ROTARY RIGHT_ENCODER STREAM");
+} else if (mode == 17 || mode == 18) {
+    sendCommandToFIFO("RESET ROTARY BUTTON STREAM");
+} else {
+    sendCommandToFIFO("RESET ROTARY STREAM");
+}
+🔧 How to Add Sensor Configuration for a New Mode
+
+Determine which sensors your new mode needs (e.g., just rotary, or rotary + microphone, etc.).
+Update the configureUARTCommands() logic with a new else if condition matching your mode’s index in the modes[] array:
+else if (mode == 19) {
+    sendCommandToFIFO("RESET ROTARY MICROPHONE STREAM");
+}
+Make sure the mode index (mode == 19) matches the position in your modes[] array.
+The buffer_process will receive this command and forward the relevant sensor data (e.g., UART lines) to your mode via DATA_FIFO_PATH.
+💡 Modes that do not need UART data at all should be marked with modes_need_uart[mode] = 0, and will receive a simple "RESET" command.
 
 3. **Decide if the Mode Needs UART**  
    - In `master_script.cpp`, there is an array `modes_need_uart[]`.  
@@ -349,11 +376,6 @@ Below is the **step-by-step** to integrate a brand-new mode:
 5. **(Optional) Specialized Launch**  
    - If your mode needs an additional script (Python, etc.), see `launchWeatherMode()` or `launchNasaImageMode()` in the code.  
    - Make a custom function if necessary, then call it when `modes[currentMode]` matches `"./awesome_mode"`.
-
-6. **Compile & Run**  
-   - Rebuild all executables (`master_script`, `buffer_process`, your new mode, etc.).  
-   - Run `./master_script`.  
-   - Switch modes either by the hardware button or returning exit codes from `main_mode_rotary`.
 
 ---
 
