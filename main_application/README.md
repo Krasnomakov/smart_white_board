@@ -2,6 +2,7 @@ IMPORTANT COMPILATION COMMANDS
 
 find more readable information below
 
+-----
 
 Install rpi-rgb-led-matrix library first! 
 
