@@ -330,6 +330,7 @@ Each mode may require specific sensors (e.g., rotary encoders, optical sensors, 
 
 This logic is implemented in the `configureUARTCommands()` function in `master_script.cpp`:
 
+```cpp
 if (modes_need_uart[mode] == 0) {
     sendCommandToFIFO("RESET");
 } else if (mode == 3 || mode == 13 || mode == 15) {
@@ -341,6 +342,8 @@ if (modes_need_uart[mode] == 0) {
 } else {
     sendCommandToFIFO("RESET ROTARY STREAM");
 }
+```
+
 🔧 How to Add Sensor Configuration for a New Mode
 
 Determine which sensors your new mode needs (e.g., just rotary, or rotary + microphone, etc.).
