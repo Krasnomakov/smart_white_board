@@ -93,11 +93,6 @@ For db cloning need to set up ssh keys - request help
 
 -----
 
-Below is the **README** compiled into one file. You can copy and paste it into a file named `README.md` (or similar) to make it downloadable.
-
-```markdown
-# README
-
 This repository implements a **multi-mode** LED-matrix application controlled by a **master script** (`master_script.cpp`). The master script uses:
 1. A **buffer process** (`buffer_process.cpp`) to handle data flow from various sensors/inputs (UART, rotary encoders, etc.).
 2. One of several **modes** (e.g., `2_player_pong.cpp`) that reads sensor data from a FIFO and draws to the LED matrix.
