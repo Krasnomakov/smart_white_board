@@ -1,5 +1,5 @@
 // Include necessary libraries
-#include "../include/led-matrix-c.h"
+#include "/home/beamboard/rpi-rgb-led-matrix/include/led-matrix-c.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

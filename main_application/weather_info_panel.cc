@@ -1,5 +1,5 @@
-#include "../include/led-matrix.h"
-#include "../include/graphics.h"    // For fonts and graphics
+#include "led-matrix.h"
+#include "graphics.h"    // For fonts and graphics
 #include <Magick++.h>               // Include Magick++ header
 #include <vector>
 #include <signal.h>
@@ -11,10 +11,7 @@
 #include <curl/curl.h>
 #include <algorithm>                // For std::remove
 
-using rgb_matrix::RGBMatrix;
-using rgb_matrix::Canvas;
-using rgb_matrix::FrameCanvas;
-using rgb_matrix::Color;
+using namespace rgb_matrix;
 using namespace std;
 
 volatile bool interrupt_received = false;
@@ -155,7 +152,7 @@ void ShowImageAndTemperature(RGBMatrix *matrix, const std::string &image_file, c
     }
 
     // Display clock and temperature
-    rgb_matrix::Font font;
+    Font font;
     if (!font.LoadFont(config.font_file.c_str())) {
         fprintf(stderr, "Couldn't load font '%s'\n", config.font_file.c_str());
         return;
@@ -174,14 +171,14 @@ void ShowImageAndTemperature(RGBMatrix *matrix, const std::string &image_file, c
     int x_clock = image_width + 2;  // Right after the image
 
     // Draw clock text above the temperature
-    rgb_matrix::DrawText(offscreen_canvas, font, x_clock, y_clock + font.baseline(), text_color, &bg_color, time_buffer, 0);
+    DrawText(offscreen_canvas, font, x_clock, y_clock + font.baseline(), text_color, &bg_color, time_buffer, 0);
 
     // Adjust the Y-position for the temperature
     int y_temperature = y_clock + font.height() + 4;  // Move temperature down slightly
     const int x_temperature = image_width + 2;  // Right after the image
 
     // Draw temperature text below the clock
-    rgb_matrix::DrawText(offscreen_canvas, font, x_temperature, y_temperature + font.baseline(), text_color, &bg_color, temperature.c_str(), 0);
+    DrawText(offscreen_canvas, font, x_temperature, y_temperature + font.baseline(), text_color, &bg_color, temperature.c_str(), 0);
 
     // Swap the offscreen canvas to display clock, image, and temperature
     offscreen_canvas = matrix->SwapOnVSync(offscreen_canvas);
@@ -293,8 +290,8 @@ int main(int argc, char **argv) {
     config.csv_file = "weather_data.csv";  // Default CSV file
 
     // Matrix configuration options
-    rgb_matrix::RGBMatrix::Options options = {};
-    rgb_matrix::RuntimeOptions rt_options = {};
+    RGBMatrix::Options options = {};
+    RuntimeOptions rt_options = {};
 
     // Mandatory flag configuration
     options.hardware_mapping = "adafruit-hat";  // Hardware mapping specific to the matrix setup
@@ -312,7 +309,7 @@ int main(int argc, char **argv) {
     signal(SIGINT, InterruptHandler);
 
     // Create and configure the RGB LED matrix based on options
-    RGBMatrix *matrix = rgb_matrix::RGBMatrix::CreateFromOptions(options, rt_options);
+    RGBMatrix *matrix = RGBMatrix::CreateFromOptions(options, rt_options);
     if (matrix == NULL) {
         return 1;  // If matrix creation fails, exit with an error
     }

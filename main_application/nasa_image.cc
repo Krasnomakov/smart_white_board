@@ -1,6 +1,7 @@
 //This script places the image to fill all the matrix. 
 
-#include "../include/led-matrix.h"
+#include "led-matrix.h"
+#include "graphics.h"
 #include <Magick++.h>
 #include <vector>
 #include <signal.h>
@@ -21,10 +22,7 @@ std::string GetCurrentDate() {
     return std::string(buffer);
 }
 
-using rgb_matrix::RGBMatrix;
-using rgb_matrix::Canvas;
-using rgb_matrix::FrameCanvas;
-using rgb_matrix::Color;
+using namespace rgb_matrix;
 using namespace std;
 
 volatile bool interrupt_received = false;
@@ -117,7 +115,7 @@ void ShowImage(RGBMatrix *matrix, const std::string &image_file) {
 }
 
 void DisplayImageLoop(const Config &config, RGBMatrix *matrix) {
-    std::string image_file = "nasa_image_" + GetCurrentDate() + ".png";
+    std::string image_file = "nasa_image_output.jpg";
 
     // Wait until the image file exists
     while (!interrupt_received) {
@@ -151,8 +149,8 @@ int main(int argc, char **argv) {
 
     Config config;
 
-    rgb_matrix::RGBMatrix::Options options = {};
-    rgb_matrix::RuntimeOptions rt_options = {};
+    RGBMatrix::Options options = {};
+    RuntimeOptions rt_options = {};
 
     options.hardware_mapping = "adafruit-hat";
     options.cols = 64;
@@ -166,7 +164,7 @@ int main(int argc, char **argv) {
     signal(SIGTERM, InterruptHandler);
     signal(SIGINT, InterruptHandler);
 
-    RGBMatrix *matrix = rgb_matrix::RGBMatrix::CreateFromOptions(options, rt_options);
+    RGBMatrix *matrix = RGBMatrix::CreateFromOptions(options, rt_options);
     if (matrix == NULL) {
         return 1;
     }

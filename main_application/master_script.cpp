@@ -14,6 +14,8 @@
 #include <atomic>
 #include <pthread.h>
 #include <stdarg.h>   // <-- ADDED to fix 'va_start' / 'va_end' errors
+#include <libgen.h>   // For dirname()
+#include <linux/limits.h> // for PATH_MAX
 
 // Your existing definitions and includes
 #define UART_DEVICE "/dev/ttyACM0"
@@ -21,6 +23,9 @@
 #define DATA_FIFO_PATH "/tmp/mode_fifo"
 #define BUFFER_PROCESS "./buffer_process"
 #define LOG_DIR "./logs"
+
+// Define the correct python path here, this is the key to fixing module/permission issues
+#define PYTHON_PATH "/usr/bin/python"
 
 // Global variables for process management
 pid_t buffer_pid = -1;
@@ -299,9 +304,7 @@ void launchOllamaMode() {
     ollama_pid = fork();
     if (ollama_pid == 0) {
         setpgid(0, 0);
-        execlp("./updated_ollama", "./updated_ollama",
-               "-f", "/home/pi/Documents/rpi-rgb-led-matrix/fonts/6x10.bdf",
-               NULL);
+        execlp("./updated_ollama", "./updated_ollama", "-f", "6x9.bdf", NULL);
         perror("Failed to launch updated_ollama");
         exit(1);
     } else if (ollama_pid < 0) {
@@ -324,7 +327,7 @@ void launchWeatherMode(pid_t *child_pid) {
     weather_py_pid = fork();
     if (weather_py_pid == 0) {
         setpgid(0, 0);
-        execlp("python3", "python3", "./buienRadarToCsv.py", NULL);
+        execlp(PYTHON_PATH, "python", "./buienRadarToCsv.py", NULL);
         perror("Failed to launch buienRadarToCsv.py");
         exit(1);
     } else if (weather_py_pid < 0) {
@@ -374,7 +377,7 @@ void launchNasaImageMode(pid_t *child_pid) {
         snprintf(date_str, sizeof(date_str), "%04d-%02d-%02d",
                  t->tm_year + 1900, t->tm_mon + 1, t->tm_mday);
 
-        execlp("python3", "python3", "./nasa_image.py", date_str, NULL);
+        execlp(PYTHON_PATH, "python", "./nasa_image.py", date_str, NULL);
         perror("Failed to launch nasa_image.py");
         exit(1);
     } else if (nasa_py_pid < 0) {
@@ -421,6 +424,25 @@ void handle_signal(int sig) {
 }
 
 int main() {
+    // --- THIS IS THE FIX ---
+    // Change working directory to the location of the executable.
+    // This makes all relative paths for modes and scripts work correctly,
+    // regardless of where master_script is launched from.
+    char executable_path[PATH_MAX];
+    ssize_t len = readlink("/proc/self/exe", executable_path, sizeof(executable_path) - 1);
+    if (len != -1) {
+        executable_path[len] = '\0';
+        char* exec_dir = dirname(executable_path);
+        if (chdir(exec_dir) != 0) {
+            perror("FATAL: Failed to change working directory");
+            return 1; // Exit if we can't cd to the right place.
+        }
+    } else {
+        perror("FATAL: Failed to find executable path");
+        return 1;
+    }
+    // --- END OF FIX ---
+
     int currentMode = 17;  // launch main_mode_rotary
     pid_t child_pid = -1;
 

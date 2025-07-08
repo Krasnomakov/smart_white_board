@@ -1,4 +1,4 @@
-#include </home/pi/WiringPi/wiringPi/wiringPi.h>  // For GPIO access
+#include <wiringPi.h>  // For GPIO access
 #include "../include/led-matrix.h"
 #include "../include/graphics.h"
 #include <chrono>
@@ -670,12 +670,12 @@ int main(int argc, char* argv[]) {
 
     // 5) Load fonts
     Font font;
-    if (!font.LoadFont("../fonts/5x8.bdf")) {
+    if (!font.LoadFont("5x8.bdf")) {
         fprintf(stderr, "Failed to load font.\n");
         return 1;
     }
     Font smallFont;
-    if (!smallFont.LoadFont("../fonts/5x8.bdf")) {
+    if (!smallFont.LoadFont("5x8.bdf")) {
         fprintf(stderr, "Failed to load small font.\n");
         return 1;
     }

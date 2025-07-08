@@ -14,8 +14,13 @@
 #include <sys/wait.h>
 #include <mutex>
 #include <thread>
+#include <libgen.h>
+#include <linux/limits.h>
 
 using namespace rgb_matrix;
+
+// Define the correct python path here, this is the key to fixing module/permission issues
+#define PYTHON_PATH "/usr/bin/python"
 
 volatile bool interrupt_received = false;
 pid_t child_pid = -1;
@@ -165,9 +170,17 @@ int main(int argc, char *argv[]) {
     dup2(pipefd[1], STDOUT_FILENO);
     close(pipefd[1]);
 
-    const char* python_command = "/home/pi/venv/bin/python";
-    const char* script_path = "/home/pi/Documents/rpi-rgb-led-matrix/examples-api-use/ollama_no_input.py";
-    execlp(python_command, python_command, script_path, (char*)NULL);
+    // Construct the full, absolute path to the python script
+    char script_path[PATH_MAX];
+    if (readlink("/proc/self/exe", script_path, sizeof(script_path)) == -1) {
+      perror("readlink");
+      exit(1);
+    }
+    char *exec_dir = dirname(script_path);
+    snprintf(script_path, sizeof(script_path), "%s/ollama_no_input.py", exec_dir);
+
+    // Execute with the absolute script path and the correct python interpreter
+    execlp(PYTHON_PATH, "python", script_path, (char*)NULL);
 
     perror("execlp");
     exit(1);

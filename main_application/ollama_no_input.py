@@ -15,8 +15,8 @@ def signal_handler(sig, frame):
 signal.signal(signal.SIGTERM, signal_handler)
 
 # Base URL and model configuration
-base_url = 'http://100.72.145.90:11434/v1/chat/completions'
-model_name = "llama3.2:1b"
+base_url = 'http://192.168.88.252:11434/v1/chat/completions'
+model_name = "qwen3:1.7b"
 
 # Fixed system and user prompt messages
 payload_template = {
@@ -24,7 +24,8 @@ payload_template = {
     "messages": [
         {"role": "system", "content": "You are a helpful assistant."},
         {"role": "user", "content": "Return a short, simple, and random fact about a topic from your list."}
-    ]
+    ],
+    "enable_thinking": False
 }
 
 # Continuously generate responses
