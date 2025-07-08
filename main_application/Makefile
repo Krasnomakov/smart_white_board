@@ -1,7 +1,7 @@
 CFLAGS=-Wall -O3 -g -Wextra -Wno-unused-parameter
 CXXFLAGS=$(CFLAGS)
-OBJECTS=weather_info_panel.o ollama-to-led.o nasa_image.o updated_ollama.o
-BINARIES=weather_info_panel nasa_image updated_ollama
+OBJECTS=weather_info_panel.o ollama-to-led.o nasa_image.o updated_ollama.o thermal_display.o
+BINARIES=weather_info_panel nasa_image updated_ollama thermal_display
 
 # Where our library resides. You mostly only need to change the
 # RGB_LIB_DISTRIBUTION, this is where the library is checked out.
@@ -61,6 +61,13 @@ nasa_image.o : nasa_image.cc
 
 nasa_image : nasa_image.o $(RGB_LIBRARY)
 	$(CXX) $< -o $@ $(LDFLAGS) $(MAGICK_LDFLAGS) $(CURL_LDFLAGS)
+
+# Rule to compile the thermal_display example.
+thermal_display.o : thermal_display.cpp
+	$(CXX) -I$(RGB_INCDIR) $(CXXFLAGS) $(MAGICK_CXXFLAGS) -c -o $@ $<
+
+thermal_display : thermal_display.o $(RGB_LIBRARY)
+	$(CXX) $< -o $@ $(LDFLAGS) $(MAGICK_LDFLAGS)
 
 # Rule to compile the updated_ollama example.
 updated_ollama.o : updated_ollama.cc
