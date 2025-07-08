@@ -465,7 +465,8 @@ int main() {
         "./coral_garden_rotary",
         "./2_player_pong",
         "./main_mode_rotary",
-        "./3d_labyrinth_control"
+        "./3d_labyrinth_control",
+        "./thermal_display"
     };
 
     const int modes_need_uart[] = {
@@ -487,7 +488,8 @@ int main() {
         1, // coral_garden_rotary
         1, // 2_player_pong
         1, // main_mode_rotary
-        1  // 3d_labyrinth_control
+        1, // 3d_labyrinth_control
+        0  // thermal_display 
     };
     const int totalModes = sizeof(modes) / sizeof(modes[0]);
 

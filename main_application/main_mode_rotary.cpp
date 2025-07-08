@@ -1,6 +1,6 @@
 #include <wiringPi.h>  // For GPIO access
-#include "../include/led-matrix.h"
-#include "../include/graphics.h"
+#include "/home/beamboard/rpi-rgb-led-matrix/include/led-matrix.h"
+#include "/home/beamboard/rpi-rgb-led-matrix/include/graphics.h"
 #include <chrono>
 #include <string>
 #include <vector>

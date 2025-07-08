@@ -14,7 +14,11 @@
 #include <stdio.h>
 #include <sstream>
 
-using namespace rgb_matrix;
+using rgb_matrix::RGBMatrix;
+using rgb_matrix::Canvas;
+using rgb_matrix::FrameCanvas;
+using rgb_matrix::RuntimeOptions;
+
 using namespace std;
 
 volatile bool interrupt_received = false;
@@ -28,7 +32,7 @@ void DisplayThermalData(RGBMatrix *matrix) {
     const int thermal_image_height = 32;
 
     // Command to execute the python script
-    const char* cmd = "python main_application/thermal_cam_script.py";
+    const char* cmd = "sudo python thermal_cam_script.py 2>&1";
     FILE* pipe = popen(cmd, "r");
     if (!pipe) {
         cerr << "Could not open pipe to Python script." << endl;
@@ -59,6 +63,12 @@ void DisplayThermalData(RGBMatrix *matrix) {
 
         Magick::Image image(thermal_image_width, thermal_image_height, "RGB", Magick::CharPixel, pixels.data());
 
+        // Rotate the image 90 degrees
+        image.rotate(90);
+
+        // Reflect the image horizontally
+        image.flop();
+
         // Scale and crop to fit the matrix
         double image_aspect = (double)image.columns() / image.rows();
         double matrix_aspect = (double)matrix->width() / matrix->height();
@@ -79,10 +89,7 @@ void DisplayThermalData(RGBMatrix *matrix) {
             for (size_t x = 0; x < image.columns(); ++x) {
                 const Magick::Color &c = image.pixelColor(x, y);
                 if (c.alphaQuantum() < 256) {
-                    offscreen_canvas->SetPixel(x, y,
-                                     ScaleQuantumToChar(c.redQuantum()),
-                                     ScaleQuantumToChar(c.greenQuantum()),
-                                     ScaleQuantumToChar(c.blueQuantum()));
+                    offscreen_canvas->SetPixel(x, y, c.redQuantum() / 257, c.greenQuantum() / 257, c.blueQuantum() / 257);
                 }
             }
         }
