@@ -13,7 +13,7 @@
 
 const int MATRIX_WIDTH = 64;
 const int MATRIX_HEIGHT = 32;
-const int PADDLE_WIDTH = 14;  // Increased paddle width
+const int PADDLE_WIDTH = 24;  // Increased paddle width
 const int PADDLE_HEIGHT = 2;
 const int BALL_SIZE = 1;
 const int BRICK_ROWS = 4;
