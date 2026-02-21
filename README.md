@@ -1,4 +1,14 @@
- Ambient AIoT LED Black Board Codebase 
+# Ambient AIoT LED Black Board Codebase
+
+![C++](https://img.shields.io/badge/C%2B%2B-17-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![CircuitPython](https://img.shields.io/badge/CircuitPython-Pico_W-7B2CBF?style=for-the-badge&logo=raspberrypi&logoColor=white)
+![Raspberry Pi](https://img.shields.io/badge/Raspberry%20Pi-4%20%2F%20Pico%20W-C51A4A?style=for-the-badge&logo=raspberrypi&logoColor=white)
+![LED Matrix](https://img.shields.io/badge/rpi--rgb--led--matrix-Enabled-111111?style=for-the-badge&logo=matrix&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-Data%20Logging-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
+![libgpiod](https://img.shields.io/badge/libgpiod-GPIO-2E7D32?style=for-the-badge)
+![GraphicsMagick](https://img.shields.io/badge/GraphicsMagick-Image%20Pipeline-5C2D91?style=for-the-badge)
+![libcurl](https://img.shields.io/badge/libcurl-HTTP%20Fetch-0F4C81?style=for-the-badge)
 
 Tested on Raspberry Pi 4, Bookworm OS for main application 
 Raspberry Pi Pico w, Circuitpython for pico code 
