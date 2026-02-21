@@ -182,5 +182,4 @@ It creates/uses tables:
 
 ## Known caveats
 
-- File name mismatch: `beffer_process_wip.cpp` vs expected runtime binary `buffer_process`.
 - Several legacy compile commands in older docs had path typos (`/Lhome/...`). Use the commands in this README instead.
