@@ -13,6 +13,7 @@
 #include <string>
 #include <stdio.h>
 #include <sstream>
+#include <sys/wait.h>
 
 using rgb_matrix::RGBMatrix;
 using rgb_matrix::Canvas;
@@ -32,7 +33,7 @@ void DisplayThermalData(RGBMatrix *matrix) {
     const int thermal_image_height = 32;
 
     // Command to execute the python script
-    const char* cmd = "sudo python thermal_cam_script.py 2>&1";
+    const char* cmd = "python3 thermal_cam_script.py 2>&1";
     FILE* pipe = popen(cmd, "r");
     if (!pipe) {
         cerr << "Could not open pipe to Python script." << endl;
@@ -40,6 +41,8 @@ void DisplayThermalData(RGBMatrix *matrix) {
     }
 
     FrameCanvas *offscreen_canvas = matrix->CreateFrameCanvas();
+    int rendered_frames = 0;
+    int non_frame_lines = 0;
     
     // Buffer to read one line of data from the python script
     char buffer[16384]; // 32*32*3 RGB values * up to 4 chars each (e.g. "255 ")
@@ -57,6 +60,10 @@ void DisplayThermalData(RGBMatrix *matrix) {
         }
 
         if (pixels.size() != thermal_image_width * thermal_image_height * 3) {
+            if (non_frame_lines < 5) {
+                cerr << "thermal_cam_script non-frame output: " << buffer;
+            }
+            ++non_frame_lines;
             // Skip if we didn't get a full frame of data
             continue;
         }
@@ -94,9 +101,22 @@ void DisplayThermalData(RGBMatrix *matrix) {
             }
         }
         offscreen_canvas = matrix->SwapOnVSync(offscreen_canvas);
+        ++rendered_frames;
     }
 
-    pclose(pipe);
+    int status = pclose(pipe);
+    if (rendered_frames == 0) {
+        cerr << "thermal_display: no frames rendered from thermal_cam_script." << endl;
+    }
+    if (rendered_frames == 0) {
+        if (status == -1) {
+            perror("thermal_display: pclose failed");
+        } else if (WIFEXITED(status)) {
+            cerr << "thermal_cam_script exited with code " << WEXITSTATUS(status) << endl;
+        } else if (WIFSIGNALED(status)) {
+            cerr << "thermal_cam_script terminated by signal " << WTERMSIG(status) << endl;
+        }
+    }
 }
 
 
@@ -114,6 +134,7 @@ int main(int argc, char **argv) {
     options.brightness = 100;
 
     rt_options.gpio_slowdown = 4;
+    rt_options.drop_privileges = 0;
 
     signal(SIGTERM, InterruptHandler);
     signal(SIGINT, InterruptHandler);

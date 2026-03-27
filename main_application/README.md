@@ -13,9 +13,9 @@
 This folder contains the Raspberry Pi LED-matrix runtime, including:
 
 - `master_script.cpp` (mode orchestrator)
-- `beffer_process_wip.cpp` (UART/FIFO sensor buffer process)
+- `buffer_process.cpp` (UART/FIFO sensor buffer process)
 - game/visualization modes (`*.cpp`, `*.cc`)
-- helper Python scripts for weather/NASA data
+- helper Python scripts for weather/NASA/Grid-Eye data
 
 ## Architecture (runtime flow)
 
@@ -39,13 +39,13 @@ Logs are written to:
 - `WiringPi` (used by `main_mode_rotary.cpp`)
 - GraphicsMagick++ and libcurl (for image/weather modes)
 - SQLite3 (for `db_manager.cpp`)
-- Python 3 with required packages
+- Python 3 with required packages (`requests`, `buienradar`, `numpy`, `scipy`, `colour`, `smbus`)
 
 Example Debian/Raspberry Pi OS packages:
 
 ```bash
 sudo apt update
-sudo apt install -y g++ make libgpiod-dev libsqlite3-dev libcurl4-openssl-dev graphicsmagick libgraphicsmagick++-dev python3-pip
+sudo apt install -y g++ make libgpiod-dev libsqlite3-dev libcurl4-openssl-dev graphicsmagick libgraphicsmagick++-dev python3-pip python3-scipy python3-colour python3-smbus
 ```
 
 Optional (for `main_mode_rotary.cpp`):
@@ -70,54 +70,38 @@ Set your LED matrix library location (adjust path as needed):
 export RGBMATRIX_DIR=/home/pi/Documents/rpi-rgb-led-matrix
 ```
 
-### 1) Build special `.cc/.cpp` targets covered by Makefile
+### 1) Build everything (recommended)
+
+```bash
+bash build_all.sh
+```
+
+This builds all mode binaries listed in `master_script.cpp` plus:
+
+- `master_script`
+- `buffer_process`
+- `db_manager`
+
+### 2) Makefile-only builds
 
 ```bash
 make
 ```
 
-This builds:
+This builds all mode binaries listed in `master_script.cpp`.
 
-- `weather_info_panel`
-- `nasa_image`
-- `updated_ollama`
-- `thermal_display`
+Additional useful targets:
 
-### 2) Build `master_script`
+- `make extras` (builds `master_script`, `buffer_process`, `db_manager`)
+- `make build-all` (equivalent to `make all extras`)
+- `make clean` (cleans mode objects/binaries)
+- `make clean-all` (cleans everything including `master_script`, `buffer_process`, `db_manager`)
 
-```bash
-g++ -o master_script master_script.cpp -lgpiod -lpthread
-```
-
-### 3) Build buffer process (important)
-
-`master_script.cpp` launches `./buffer_process`, but source file is currently named `beffer_process_wip.cpp`.
-
-Compile it to the expected binary name:
+### 3) Clean and rebuild from scratch
 
 ```bash
-g++ -o buffer_process beffer_process_wip.cpp
-```
-
-### 4) Build mode binaries you want to run
-
-Most modes need `rpi-rgb-led-matrix` include/lib flags:
-
-```bash
-g++ -o 2_player_pong 2_player_pong.cpp \
-  -I"$RGBMATRIX_DIR/include" -L"$RGBMATRIX_DIR/lib" \
-  -lrgbmatrix -lrt -lpthread -lm
-```
-
-Use the same pattern for other `*.cpp` mode files.
-
-`main_mode_rotary.cpp` additionally needs WiringPi:
-
-```bash
-g++ -v -o main_mode_rotary main_mode_rotary.cpp \
-  -I/home/pi/WiringPi/wiringPi \
-  -I"$RGBMATRIX_DIR/include" -L"$RGBMATRIX_DIR/lib" \
-  -lrt -lm -lpthread -lrgbmatrix -lwiringPi
+make clean-all
+bash build_all.sh
 ```
 
 ## Run
@@ -165,6 +149,13 @@ Current order (index → executable):
 - `nasa_image.py` downloads APOD image + title into:
   - `nasa_image_output.jpg`
   - `nasa_image_title.txt`
+
+## Thermal (Grid-Eye) mode notes
+
+- Thermal mode executable: `./thermal_display`
+- Python helper: `thermal_cam_script.py`
+- Run `master_script` with `sudo` so matrix timing and I2C access are available.
+- The runtime uses `python3 thermal_cam_script.py` (no nested `sudo`).
 
 ## Database utility
 

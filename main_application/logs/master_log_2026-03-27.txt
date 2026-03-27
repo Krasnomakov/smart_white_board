@@ -1,0 +1,1070 @@
+[22:23:30] Buffer process launched with PID 10291.
+[22:23:30] Sent command to FIFO: RESET ROTARY BUTTON STREAM
+[22:23:30] Mode switched to: ./main_mode_rotary
+[22:23:30] Forked child process with PID 10293 for mode './main_mode_rotary'
+[22:23:30] Switching to ./main_mode_rotary mode...
+[22:23:30] Sent command to FIFO: GET_ALL_SENSORS
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+FYI: not running as root which means we can't properly control timing unless this is a real-time kernel. Expect color degradation. Consider running as root with sudo.
+Can't set realtime thread priority=99: Operation not permitted.
+	You are probably not running as root ?
+	This will seriously mess with color stability and flicker
+	of the matrix. Please run as `root` (e.g. by invoking this
+	program with `sudo`), or setting the capability on this
+	binary by calling
+	sudo setcap 'cap_sys_nice=eip' /home/hottea/Documents/LED-Board/main_application/main_mode_rotary
+Assigned 5 random modes: 7 11 16 12 6 
+Received unexpected data: Button is released
+Received unexpected data: ALS: 4.25787 lxTemperature: 23.1 CHumidity: 33.2 %Sound Magnitude: 67.9629
+[22:23:43] Child process 10293 exited with status 25600
+[22:23:43] Main mode exit => user requested mode index 0.
+[22:23:43] Sent command to FIFO: RESET
+[22:23:43] Sent command to FIFO: RESET ROTARY STREAM
+[22:23:43] Mode switched to: ./updated_pong_with_rotary
+[22:23:43] Forked child process with PID 10390 for './updated_pong_with_rotary'
+[22:23:43] Switching to ./updated_pong_with_rotary mode...
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+FYI: not running as root which means we can't properly control timing unless this is a real-time kernel. Expect color degradation. Consider running as root with sudo.
+Can't set realtime thread priority=99: Operation not permitted.
+	You are probably not running as root ?
+	This will seriously mess with color stability and flicker
+	of the matrix. Please run as `root` (e.g. by invoking this
+	program with `sudo`), or setting the capability on this
+	binary by calling
+	sudo setcap 'cap_sys_nice=eip' /home/hottea/Documents/LED-Board/main_application/updated_pong_with_rotary
+[22:23:47] Exiting program. Performing cleanup...
+[22:23:47] Buffer process terminated.
+[22:23:47] Attempting to terminate child process with PID 10390
+Received data from FIFO: Rotary Encoder Position: 0
+[22:23:47] Child process terminated successfully.
+[22:23:47] Cleanup complete. Program exited.
+[22:23:53] Buffer process launched with PID 10483.
+[22:23:53] Sent command to FIFO: RESET ROTARY BUTTON STREAM
+[22:23:53] Mode switched to: ./main_mode_rotary
+[22:23:53] Forked child process with PID 10485 for mode './main_mode_rotary'
+[22:23:53] Switching to ./main_mode_rotary mode...
+[22:23:53] Sent command to FIFO: GET_ALL_SENSORS
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+Assigned 5 random modes: 2 5 1 14 16 
+Received unexpected data: Button is released
+Received unexpected data: ALS: 3.9912 lxTemperature: 23.2 CHumidity: 33.7 %Sound Magnitude: 61.9603
+[22:23:56] Child process 10485 exited with status 25600
+[22:23:56] Main mode exit => user requested mode index 0.
+[22:23:56] Sent command to FIFO: RESET
+[22:23:56] Sent command to FIFO: RESET ROTARY STREAM
+[22:23:56] Mode switched to: ./updated_pong_with_rotary
+[22:23:56] Forked child process with PID 10520 for './updated_pong_with_rotary'
+[22:23:56] Switching to ./updated_pong_with_rotary mode...
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+[22:23:58] Attempting to terminate child process with PID 10520
+Received data from FIFO: Rotary Encoder Position: 0
+[22:23:58] Child process terminated successfully.
+[22:23:58] Sent command to FIFO: RESET
+[22:23:58] Sent command to FIFO: RESET ROTARY STREAM
+[22:23:58] Mode switched to: ./brick_breaker
+[22:23:58] Forked child process with PID 10522 for mode './brick_breaker'
+[22:23:58] Switching to ./brick_breaker mode...
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+[22:23:59] Attempting to terminate child process with PID 10522
+[22:23:59] Child process terminated successfully.
+[22:23:59] Sent command to FIFO: RESET
+[22:23:59] Sent command to FIFO: RESET ROTARY RIGHT_ENCODER STREAM
+[22:23:59] Mode switched to: ./wave_gen
+[22:23:59] Forked child process with PID 10538 for mode './wave_gen'
+[22:23:59] Switching to ./wave_gen mode...
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+[22:24:00] Attempting to terminate child process with PID 10538
+[22:24:00] Child process terminated successfully.
+[22:24:00] Sent command to FIFO: RESET
+[22:24:00] Sent command to FIFO: RESET OPTICAL TEMPERATURE MICROPHONE ROTARY STREAM
+[22:24:00] Mode switched to: ./sensor_driven_visuals_7
+[22:24:00] Forked child process with PID 10558 for mode './sensor_driven_visuals_7'
+[22:24:00] Switching to ./sensor_driven_visuals_7 mode...
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+Generating blobs: sound=0.00, als=0.00, temp=0.00
+Generating blobs: sound=0.00, als=0.00, temp=0.00
+Generating blobs: sound=0.00, als=0.00, temp=0.00
+Generating blobs: sound=0.00, als=0.00, temp=0.00
+Generating blobs: sound=0.00, als=0.00, temp=0.00
+Raw FIFO Data: Temperature: 23.3 CHumidity: 33.8 %ALS: 3.9912 lxSound Magnitude: 65.1082
+Parsed Data - Sound: 65.11, ALS: 3.99, Temp: 23.30, Humidity: 33.80, Rotary: 3
+Generating blobs: sound=65.11, als=3.99, temp=23.30
+New blob: x=39, y=6, size=3.30
+New blob: x=17, y=31, size=3.30
+New blob: x=41, y=13, size=3.30
+New blob: x=50, y=27, size=3.30
+New blob: x=60, y=2, size=3.30
+New blob: x=27, y=8, size=3.30
+Blob updated: x=39, y=6, size=3.03, alpha=0.00
+Blob updated: x=17, y=31, size=3.03, alpha=0.00
+Blob updated: x=41, y=13, size=3.03, alpha=0.00
+Blob updated: x=50, y=27, size=3.03, alpha=0.00
+Blob updated: x=60, y=2, size=3.03, alpha=0.00
+Blob updated: x=27, y=8, size=3.03, alpha=0.00
+Generating blobs: sound=65.11, als=3.99, temp=23.30
+Blob updated: x=39, y=5, size=3.06, alpha=10.00
+Blob updated: x=18, y=32, size=3.06, alpha=10.00
+Blob updated: x=41, y=13, size=3.06, alpha=10.00
+Blob updated: x=50, y=27, size=3.06, alpha=10.00
+Blob updated: x=60, y=2, size=3.06, alpha=10.00
+Blob updated: x=27, y=8, size=3.06, alpha=10.00
+Raw FIFO Data: Temperature: 23.2 CHumidity: 33.7 %ALS: 3.9912 lxSound Magnitude: 62.2372
+Parsed Data - Sound: 62.24, ALS: 3.99, Temp: 23.20, Humidity: 33.70, Rotary: 3
+Generating blobs: sound=62.24, als=3.99, temp=23.20
+Blob updated: x=39, y=4, size=3.07, alpha=20.00
+Blob updated: x=19, y=31, size=3.07, alpha=20.00
+Blob updated: x=41, y=13, size=3.07, alpha=20.00
+Blob updated: x=50, y=27, size=3.07, alpha=20.00
+Blob updated: x=60, y=2, size=3.07, alpha=20.00
+Blob updated: x=27, y=8, size=3.07, alpha=20.00
+Generating blobs: sound=62.24, als=3.99, temp=23.20
+Blob updated: x=39, y=3, size=3.08, alpha=30.00
+Blob updated: x=20, y=30, size=3.08, alpha=30.00
+Blob updated: x=41, y=13, size=3.08, alpha=30.00
+Blob updated: x=50, y=27, size=3.08, alpha=30.00
+Blob updated: x=60, y=2, size=3.08, alpha=30.00
+Blob updated: x=27, y=8, size=3.08, alpha=30.00
+Generating blobs: sound=62.24, als=3.99, temp=23.20
+Blob updated: x=39, y=2, size=3.10, alpha=40.00
+Blob updated: x=21, y=29, size=3.10, alpha=40.00
+Blob updated: x=41, y=13, size=3.10, alpha=40.00
+Blob updated: x=50, y=27, size=3.10, alpha=40.00
+Blob updated: x=60, y=2, size=3.10, alpha=40.00
+Blob updated: x=27, y=8, size=3.10, alpha=40.00
+Generating blobs: sound=62.24, als=3.99, temp=23.20
+Blob updated: x=39, y=1, size=3.11, alpha=50.00
+Blob updated: x=22, y=28, size=3.11, alpha=50.00
+Blob updated: x=41, y=13, size=3.11, alpha=50.00
+Blob updated: x=50, y=27, size=3.11, alpha=50.00
+Blob updated: x=60, y=2, size=3.11, alpha=50.00
+Blob updated: x=27, y=8, size=3.11, alpha=50.00
+Raw FIFO Data: Temperature: 23.2 CHumidity: 33.7 %ALS: 3.9912 lxSound Magnitude: 61.6678
+Parsed Data - Sound: 61.67, ALS: 3.99, Temp: 23.20, Humidity: 33.70, Rotary: 3
+Generating blobs: sound=61.67, als=3.99, temp=23.20
+Blob updated: x=39, y=0, size=3.12, alpha=60.00
+Blob updated: x=23, y=27, size=3.12, alpha=60.00
+Blob updated: x=41, y=13, size=3.12, alpha=60.00
+Blob updated: x=50, y=27, size=3.12, alpha=60.00
+Blob updated: x=60, y=2, size=3.12, alpha=60.00
+Blob updated: x=27, y=8, size=3.12, alpha=60.00
+Generating blobs: sound=61.67, als=3.99, temp=23.20
+Blob updated: x=39, y=-1, size=3.12, alpha=70.00
+Blob updated: x=24, y=26, size=3.12, alpha=70.00
+Blob updated: x=41, y=13, size=3.12, alpha=70.00
+Blob updated: x=50, y=27, size=3.12, alpha=70.00
+Blob updated: x=60, y=2, size=3.12, alpha=70.00
+Blob updated: x=27, y=8, size=3.12, alpha=70.00
+Raw FIFO Data: Temperature: 23.3 CHumidity: 33.7 %ALS: 3.9912 lxSound Magnitude: 67.4822
+Parsed Data - Sound: 67.48, ALS: 3.99, Temp: 23.30, Humidity: 33.70, Rotary: 3
+Generating blobs: sound=67.48, als=3.99, temp=23.30
+Blob updated: x=39, y=0, size=3.14, alpha=80.00
+Blob updated: x=25, y=25, size=3.14, alpha=80.00
+Blob updated: x=41, y=13, size=3.14, alpha=80.00
+Blob updated: x=50, y=27, size=3.14, alpha=80.00
+Blob updated: x=60, y=2, size=3.14, alpha=80.00
+Blob updated: x=27, y=8, size=3.14, alpha=80.00
+Generating blobs: sound=67.48, als=3.99, temp=23.30
+Blob updated: x=39, y=1, size=3.16, alpha=90.00
+Blob updated: x=26, y=24, size=3.16, alpha=90.00
+Blob updated: x=41, y=13, size=3.16, alpha=90.00
+Blob updated: x=50, y=27, size=3.16, alpha=90.00
+Blob updated: x=60, y=2, size=3.16, alpha=90.00
+Blob updated: x=27, y=8, size=3.16, alpha=90.00
+Generating blobs: sound=67.48, als=3.99, temp=23.30
+Blob updated: x=39, y=2, size=3.17, alpha=100.00
+Blob updated: x=27, y=23, size=3.17, alpha=100.00
+Blob updated: x=41, y=13, size=3.17, alpha=100.00
+Blob updated: x=50, y=27, size=3.17, alpha=100.00
+Blob updated: x=60, y=2, size=3.17, alpha=100.00
+Blob updated: x=27, y=8, size=3.17, alpha=100.00
+Generating blobs: sound=67.48, als=3.99, temp=23.30
+Blob updated: x=39, y=3, size=3.18, alpha=110.00
+Blob updated: x=28, y=22, size=3.18, alpha=110.00
+Blob updated: x=41, y=13, size=3.18, alpha=110.00
+Blob updated: x=50, y=27, size=3.18, alpha=110.00
+Blob updated: x=60, y=2, size=3.18, alpha=110.00
+Blob updated: x=27, y=8, size=3.18, alpha=110.00
+Raw FIFO Data: Temperature: 23.3 CHumidity: 33.8 %ALS: 3.9912 lxSound Magnitude: 63.5851
+Parsed Data - Sound: 63.59, ALS: 3.99, Temp: 23.30, Humidity: 33.80, Rotary: 3
+Generating blobs: sound=63.59, als=3.99, temp=23.30
+Blob updated: x=39, y=4, size=3.20, alpha=120.00
+Blob updated: x=29, y=21, size=3.20, alpha=120.00
+Blob updated: x=41, y=13, size=3.20, alpha=120.00
+Blob updated: x=50, y=27, size=3.20, alpha=120.00
+Blob updated: x=60, y=2, size=3.20, alpha=120.00
+Blob updated: x=27, y=8, size=3.20, alpha=120.00
+Generating blobs: sound=63.59, als=3.99, temp=23.30
+Blob updated: x=39, y=5, size=3.21, alpha=130.00
+Blob updated: x=30, y=20, size=3.21, alpha=130.00
+Blob updated: x=41, y=13, size=3.21, alpha=130.00
+Blob updated: x=50, y=27, size=3.21, alpha=130.00
+Blob updated: x=60, y=2, size=3.21, alpha=130.00
+Blob updated: x=27, y=8, size=3.21, alpha=130.00
+Raw FIFO Data: Temperature: 23.3 CHumidity: 33.7 %ALS: 3.9912 lxSound Magnitude: 58.4544
+Parsed Data - Sound: 58.45, ALS: 3.99, Temp: 23.30, Humidity: 33.70, Rotary: 3
+Generating blobs: sound=58.45, als=3.99, temp=23.30
+Blob updated: x=39, y=6, size=3.22, alpha=140.00
+Blob updated: x=31, y=19, size=3.22, alpha=140.00
+Blob updated: x=41, y=13, size=3.22, alpha=140.00
+Blob updated: x=50, y=27, size=3.22, alpha=140.00
+Blob updated: x=60, y=2, size=3.22, alpha=140.00
+Blob updated: x=27, y=8, size=3.22, alpha=140.00
+Generating blobs: sound=58.45, als=3.99, temp=23.30
+Blob updated: x=39, y=7, size=3.22, alpha=150.00
+Blob updated: x=32, y=18, size=3.22, alpha=150.00
+Blob updated: x=41, y=13, size=3.22, alpha=150.00
+Blob updated: x=50, y=27, size=3.22, alpha=150.00
+Blob updated: x=60, y=2, size=3.22, alpha=150.00
+Blob updated: x=27, y=8, size=3.22, alpha=130.00
+Generating blobs: sound=58.45, als=3.99, temp=23.30
+Blob updated: x=39, y=8, size=3.23, alpha=160.00
+Blob updated: x=33, y=17, size=3.23, alpha=160.00
+Blob updated: x=41, y=13, size=3.23, alpha=160.00
+Blob updated: x=50, y=27, size=3.23, alpha=160.00
+Blob updated: x=60, y=2, size=3.23, alpha=160.00
+Blob updated: x=27, y=8, size=3.23, alpha=120.00
+Generating blobs: sound=58.45, als=3.99, temp=23.30
+Blob updated: x=39, y=9, size=3.24, alpha=170.00
+Blob updated: x=34, y=16, size=3.24, alpha=170.00
+Blob updated: x=41, y=13, size=3.24, alpha=170.00
+Blob updated: x=50, y=27, size=3.24, alpha=170.00
+Blob updated: x=60, y=2, size=3.24, alpha=170.00
+Blob updated: x=27, y=8, size=3.24, alpha=110.00
+Generating blobs: sound=58.45, als=3.99, temp=23.30
+Blob updated: x=39, y=10, size=3.24, alpha=180.00
+Blob updated: x=35, y=15, size=3.24, alpha=180.00
+Blob updated: x=41, y=13, size=3.24, alpha=180.00
+Blob updated: x=50, y=27, size=3.24, alpha=180.00
+Blob updated: x=60, y=2, size=3.24, alpha=180.00
+Blob updated: x=27, y=8, size=3.24, alpha=100.00
+Raw FIFO Data: Temperature: 23.3 CHumidity: 33.7 %ALS: 3.9912 lxSound Magnitude: 62.3733
+Parsed Data - Sound: 62.37, ALS: 3.99, Temp: 23.30, Humidity: 33.70, Rotary: 3
+Generating blobs: sound=62.37, als=3.99, temp=23.30
+Blob updated: x=39, y=11, size=3.25, alpha=190.00
+Blob updated: x=36, y=14, size=3.25, alpha=190.00
+Blob updated: x=41, y=13, size=3.25, alpha=190.00
+Blob updated: x=50, y=27, size=3.25, alpha=190.00
+Blob updated: x=60, y=2, size=3.25, alpha=190.00
+Blob updated: x=27, y=8, size=3.25, alpha=90.00
+Generating blobs: sound=62.37, als=3.99, temp=23.30
+Blob updated: x=39, y=12, size=3.26, alpha=200.00
+Blob updated: x=37, y=13, size=3.26, alpha=200.00
+Blob updated: x=41, y=13, size=3.26, alpha=200.00
+Blob updated: x=50, y=27, size=3.26, alpha=200.00
+Blob updated: x=60, y=2, size=3.26, alpha=200.00
+Blob updated: x=27, y=8, size=3.26, alpha=80.00
+Raw FIFO Data: Temperature: 23.3 CHumidity: 33.7 %ALS: 4.25787 lxSound Magnitude: 63.9446
+Parsed Data - Sound: 63.94, ALS: 4.26, Temp: 23.30, Humidity: 33.70, Rotary: 3
+Generating blobs: sound=63.94, als=4.26, temp=23.30
+Blob updated: x=39, y=13, size=3.26, alpha=210.00
+Blob updated: x=38, y=12, size=3.26, alpha=210.00
+Blob updated: x=41, y=13, size=3.26, alpha=210.00
+Blob updated: x=50, y=27, size=3.26, alpha=210.00
+Blob updated: x=60, y=2, size=3.26, alpha=210.00
+Blob updated: x=27, y=8, size=3.26, alpha=70.00
+Generating blobs: sound=63.94, als=4.26, temp=23.30
+Blob updated: x=39, y=14, size=3.26, alpha=220.00
+Blob updated: x=39, y=11, size=3.26, alpha=220.00
+Blob updated: x=41, y=13, size=3.26, alpha=220.00
+Blob updated: x=50, y=27, size=3.26, alpha=220.00
+Blob updated: x=60, y=2, size=3.26, alpha=220.00
+Blob updated: x=27, y=8, size=3.26, alpha=60.00
+Generating blobs: sound=63.94, als=4.26, temp=23.30
+Blob updated: x=39, y=15, size=3.27, alpha=230.00
+Blob updated: x=40, y=10, size=3.27, alpha=230.00
+Blob updated: x=41, y=13, size=3.27, alpha=230.00
+Blob updated: x=50, y=27, size=3.27, alpha=230.00
+Blob updated: x=60, y=2, size=3.27, alpha=230.00
+Blob updated: x=27, y=8, size=3.27, alpha=50.00
+Generating blobs: sound=63.94, als=4.26, temp=23.30
+Blob updated: x=39, y=16, size=3.27, alpha=240.00
+Blob updated: x=41, y=9, size=3.27, alpha=240.00
+Blob updated: x=41, y=13, size=3.27, alpha=240.00
+Blob updated: x=50, y=27, size=3.27, alpha=240.00
+Blob updated: x=60, y=2, size=3.27, alpha=240.00
+Blob updated: x=27, y=8, size=3.27, alpha=40.00
+Raw FIFO Data: Temperature: 23.3 CHumidity: 33.7 %ALS: 4.25787 lxSound Magnitude: 63.1155
+Parsed Data - Sound: 63.12, ALS: 4.26, Temp: 23.30, Humidity: 33.70, Rotary: 3
+Generating blobs: sound=63.12, als=4.26, temp=23.30
+Blob updated: x=39, y=17, size=3.27, alpha=250.00
+Blob updated: x=42, y=8, size=3.27, alpha=250.00
+Blob updated: x=41, y=13, size=3.27, alpha=250.00
+Blob updated: x=50, y=27, size=3.27, alpha=250.00
+Blob updated: x=60, y=2, size=3.27, alpha=250.00
+Blob updated: x=27, y=8, size=3.27, alpha=30.00
+Generating blobs: sound=63.12, als=4.26, temp=23.30
+Blob updated: x=39, y=18, size=3.28, alpha=255.00
+Blob updated: x=43, y=7, size=3.28, alpha=255.00
+Blob updated: x=41, y=13, size=3.28, alpha=255.00
+Blob updated: x=50, y=27, size=3.28, alpha=255.00
+Blob updated: x=60, y=2, size=3.28, alpha=255.00
+Blob updated: x=27, y=8, size=3.28, alpha=20.00
+Raw FIFO Data: Temperature: 23.3 CHumidity: 33.8 %ALS: 4.25787 lxSound Magnitude: 63.3803
+Parsed Data - Sound: 63.38, ALS: 4.26, Temp: 23.30, Humidity: 33.80, Rotary: 3
+Generating blobs: sound=63.38, als=4.26, temp=23.30
+Blob updated: x=39, y=19, size=3.28, alpha=255.00
+Blob updated: x=44, y=6, size=3.28, alpha=255.00
+Blob updated: x=41, y=13, size=3.28, alpha=255.00
+Blob updated: x=50, y=27, size=3.28, alpha=255.00
+Blob updated: x=60, y=2, size=3.28, alpha=255.00
+Blob updated: x=27, y=8, size=3.28, alpha=10.00
+Generating blobs: sound=63.38, als=4.26, temp=23.30
+New blob: x=54, y=26, size=3.30
+Blob updated: x=39, y=20, size=3.28, alpha=255.00
+Blob updated: x=45, y=5, size=3.28, alpha=255.00
+Blob updated: x=41, y=13, size=3.28, alpha=255.00
+Blob updated: x=50, y=27, size=3.28, alpha=255.00
+Blob updated: x=60, y=2, size=3.28, alpha=255.00
+Blob updated: x=54, y=26, size=3.03, alpha=0.00
+Generating blobs: sound=63.38, als=4.26, temp=23.30
+Blob updated: x=39, y=21, size=3.28, alpha=255.00
+Blob updated: x=46, y=4, size=3.28, alpha=255.00
+Blob updated: x=41, y=13, size=3.28, alpha=255.00
+Blob updated: x=50, y=27, size=3.28, alpha=255.00
+Blob updated: x=60, y=2, size=3.28, alpha=255.00
+Blob updated: x=54, y=26, size=3.06, alpha=10.00
+Generating blobs: sound=63.38, als=4.26, temp=23.30
+Blob updated: x=39, y=22, size=3.28, alpha=255.00
+Blob updated: x=47, y=3, size=3.28, alpha=255.00
+Blob updated: x=41, y=13, size=3.28, alpha=255.00
+Blob updated: x=50, y=27, size=3.28, alpha=255.00
+Blob updated: x=60, y=2, size=3.28, alpha=255.00
+Blob updated: x=54, y=26, size=3.08, alpha=20.00
+Raw FIFO Data: Temperature: 23.3 CHumidity: 33.7 %ALS: 4.25787 lxSound Magnitude: 72.5578
+Parsed Data - Sound: 72.56, ALS: 4.26, Temp: 23.30, Humidity: 33.70, Rotary: 3
+Generating blobs: sound=72.56, als=4.26, temp=23.30
+New blob: x=51, y=31, size=3.30
+Blob updated: x=39, y=23, size=3.29, alpha=255.00
+Blob updated: x=48, y=2, size=3.29, alpha=255.00
+Blob updated: x=41, y=13, size=3.29, alpha=255.00
+Blob updated: x=50, y=27, size=3.29, alpha=255.00
+Blob updated: x=60, y=2, size=3.29, alpha=255.00
+Blob updated: x=54, y=26, size=3.10, alpha=30.00
+Blob updated: x=51, y=31, size=3.03, alpha=0.00
+Generating blobs: sound=72.56, als=4.26, temp=23.30
+Blob updated: x=39, y=24, size=3.29, alpha=255.00
+Blob updated: x=49, y=1, size=3.29, alpha=255.00
+Blob updated: x=41, y=13, size=3.29, alpha=255.00
+Blob updated: x=50, y=27, size=3.29, alpha=255.00
+Blob updated: x=60, y=2, size=3.29, alpha=255.00
+Blob updated: x=54, y=26, size=3.12, alpha=40.00
+Blob updated: x=51, y=30, size=3.06, alpha=10.00
+Generating blobs: sound=72.56, als=4.26, temp=23.30
+Blob updated: x=39, y=25, size=3.29, alpha=255.00
+Blob updated: x=50, y=0, size=3.29, alpha=255.00
+Blob updated: x=41, y=13, size=3.29, alpha=255.00
+Blob updated: x=50, y=27, size=3.29, alpha=255.00
+Blob updated: x=60, y=2, size=3.29, alpha=255.00
+Blob updated: x=54, y=26, size=3.14, alpha=50.00
+Blob updated: x=51, y=29, size=3.08, alpha=20.00
+Raw FIFO Data: Temperature: 23.3 CHumidity: 33.7 %ALS: 4.25787 lxSound Magnitude: 71.0023
+Parsed Data - Sound: 71.00, ALS: 4.26, Temp: 23.30, Humidity: 33.70, Rotary: 3
+Generating blobs: sound=71.00, als=4.26, temp=23.30
+Blob updated: x=39, y=26, size=3.29, alpha=255.00
+Blob updated: x=51, y=-1, size=3.29, alpha=255.00
+Blob updated: x=41, y=13, size=3.29, alpha=255.00
+Blob updated: x=50, y=27, size=3.29, alpha=255.00
+Blob updated: x=60, y=2, size=3.29, alpha=255.00
+Blob updated: x=54, y=26, size=3.16, alpha=60.00
+Blob updated: x=51, y=28, size=3.10, alpha=30.00
+Generating blobs: sound=71.00, als=4.26, temp=23.30
+Blob updated: x=39, y=27, size=3.29, alpha=255.00
+Blob updated: x=52, y=0, size=3.29, alpha=255.00
+Blob updated: x=41, y=13, size=3.29, alpha=255.00
+Blob updated: x=50, y=27, size=3.29, alpha=255.00
+Blob updated: x=60, y=2, size=3.29, alpha=255.00
+Blob updated: x=54, y=26, size=3.17, alpha=70.00
+Blob updated: x=51, y=27, size=3.12, alpha=40.00
+Generating blobs: sound=71.00, als=4.26, temp=23.30
+Blob updated: x=39, y=28, size=3.29, alpha=255.00
+Blob updated: x=53, y=1, size=3.29, alpha=255.00
+Blob updated: x=41, y=13, size=3.29, alpha=255.00
+Blob updated: x=50, y=27, size=3.29, alpha=255.00
+Blob updated: x=60, y=2, size=3.29, alpha=255.00
+Blob updated: x=54, y=26, size=3.18, alpha=80.00
+Blob updated: x=51, y=26, size=3.14, alpha=50.00
+Generating blobs: sound=71.00, als=4.26, temp=23.30
+Blob updated: x=39, y=29, size=3.29, alpha=255.00
+Blob updated: x=54, y=2, size=3.29, alpha=255.00
+Blob updated: x=41, y=13, size=3.29, alpha=255.00
+Blob updated: x=50, y=27, size=3.29, alpha=255.00
+Blob updated: x=60, y=2, size=3.29, alpha=255.00
+Blob updated: x=54, y=26, size=3.20, alpha=90.00
+Blob updated: x=51, y=25, size=3.16, alpha=60.00
+Raw FIFO Data: Temperature: 23.3 CHumidity: 33.7 %ALS: 4.25787 lxSound Magnitude: 62.5632
+Parsed Data - Sound: 62.56, ALS: 4.26, Temp: 23.30, Humidity: 33.70, Rotary: 3
+Generating blobs: sound=62.56, als=4.26, temp=23.30
+Blob updated: x=39, y=30, size=3.29, alpha=255.00
+Blob updated: x=55, y=3, size=3.29, alpha=255.00
+Blob[22:24:01] Attempting to terminate child process with PID 10558
+[22:24:01] Child process terminated successfully.
+[22:24:01] Sent command to FIFO: RESET
+[22:24:01] Sent command to FIFO: RESET
+[22:24:01] Mode switched to: ./falling_sand
+[22:24:01] Forked child process with PID 10562 for mode './falling_sand'
+[22:24:01] Switching to ./falling_sand mode...
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+[22:24:02] Attempting to terminate child process with PID 10562
+[22:24:02] Child process terminated successfully.
+[22:24:02] Sent command to FIFO: RESET
+[22:24:02] Sent command to FIFO: RESET
+[22:24:02] Mode switched to: ./snake_in_labyrinth
+[22:24:02] Forked child process with PID 10564 for mode './snake_in_labyrinth'
+[22:24:02] Switching to ./snake_in_labyrinth mode...
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+[22:24:03] Attempting to terminate child process with PID 10564
+[22:24:03] Child process terminated successfully.
+[22:24:03] Sent command to FIFO: RESET
+[22:24:03] Sent command to FIFO: RESET
+[22:24:03] Mode switched to: ./updated_ollama
+[22:24:03] updated_ollama launched with PID 10566.
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+python: can't open file '/ollama_no_input.py': [Errno 2] No such file or directory
+[22:24:04] updated_ollama terminated.
+[22:24:04] Sent command to FIFO: RESET
+[22:24:04] Sent command to FIFO: RESET
+[22:24:04] Mode switched to: ./stars
+[22:24:04] Forked child process with PID 10570 for mode './stars'
+[22:24:04] Switching to ./stars mode...
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+[22:24:05] Attempting to terminate child process with PID 10570
+[22:24:05] Child process terminated successfully.
+[22:24:05] Sent command to FIFO: RESET
+[22:24:05] Sent command to FIFO: RESET
+[22:24:05] Mode switched to: ./cat_n_mouse
+[22:24:05] Forked child process with PID 10572 for mode './cat_n_mouse'
+[22:24:05] Switching to ./cat_n_mouse mode...
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+[22:24:06] Attempting to terminate child process with PID 10572
+[22:24:06] Child process terminated successfully.
+[22:24:06] Sent command to FIFO: RESET
+[22:24:06] Sent command to FIFO: RESET
+[22:24:06] Mode switched to: ./2_mice_1_cat
+[22:24:06] Forked child process with PID 10575 for mode './2_mice_1_cat'
+[22:24:06] Switching to ./2_mice_1_cat mode...
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+[22:24:07] Attempting to terminate child process with PID 10575
+[22:24:07] Child process terminated successfully.
+[22:24:07] Sent command to FIFO: RESET
+[22:24:07] Sent command to FIFO: RESET
+[22:24:07] Mode switched to: ./weather_info_panel
+[22:24:07] buienRadarToCsv.py launched with PID 10577.
+[22:24:07] weather_info_panel launched with PID 10578.
+[22:24:07] Switching to ./weather_info_panel mode...
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+Extracted image URL: https://cdn.buienradar.nl/resources/images/icons/weather/30x30/q.png
+[22:24:15] Attempting to terminate child process with PID 10578
+[22:24:15] Child process terminated successfully.
+[22:24:15] Attempting to terminate buienRadarToCsv.py with PID 10577
+[22:24:15] buienRadarToCsv.py terminated successfully.
+[22:24:15] Sent command to FIFO: RESET
+[22:24:15] Sent command to FIFO: RESET
+[22:24:15] Mode switched to: ./nasa_image
+[22:24:15] nasa_image.py launched with PID 10593.
+[22:24:15] nasa_image launched with PID 10594.
+[22:24:15] Switching to ./nasa_image mode...
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+[22:24:18] Attempting to terminate child process with PID 10594
+[22:24:18] Child process terminated successfully.
+[22:24:18] Attempting to terminate nasa_image.py with PID 10593
+Termination signal received. Cleaning up and exiting.
+[22:24:18] nasa_image.py terminated successfully.
+[22:24:18] Sent command to FIFO: RESET
+[22:24:18] Sent command to FIFO: RESET ROTARY STREAM
+[22:24:18] Mode switched to: ./falling_sand_rotary_color
+[22:24:18] Forked child process with PID 10596 for mode './falling_sand_rotary_color'
+[22:24:18] Switching to ./falling_sand_rotary_color mode...
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+[22:24:19] Attempting to terminate child process with PID 10596
+[22:24:19] Child process terminated successfully.
+[22:24:19] Sent command to FIFO: RESET
+[22:24:19] Sent command to FIFO: RESET OPTICAL TEMPERATURE MICROPHONE ROTARY STREAM
+[22:24:19] Mode switched to: ./dynamic_fireworks_rotary
+[22:24:19] Forked child process with PID 10604 for mode './dynamic_fireworks_rotary'
+[22:24:19] Switching to ./dynamic_fireworks_rotary mode...
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+Data written to data FIFO: Button is released
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Temperature: 23.2 C
+Data written to data FIFO: Humidity: 33.7 %
+Data written to data FIFO: Sound Magnitude: 61.9603
+Data written to data FIFO: Rotary Encoder Position: 1
+Data written to data FIFO: Rotary Encoder Position: 2
+Data written to data FIFO: Rotary Encoder Position: 3
+Data written to data FIFO: Rotary Encoder Position: 4
+Data written to data FIFO: Button is pressed
+Data written to data FIFO: Rotary Encoder Position: 0
+Data written to data FIFO: Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.8 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 65.1082
+Data written to data FIFO: Temperature: 23.2 C
+Data written to data FIFO: Humidity: 33.7 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 62.2372
+Data written to data FIFO: Temperature: 23.2 C
+Data written to data FIFO: Humidity: 33.7 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 61.6678
+Data written to data FIFO: Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.7 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 67.4822
+Data written to data FIFO: Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.8 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 63.5851
+Data written to data FIFO: Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.7 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 58.4544
+Data written to data FIFO: Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.7 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 62.3733
+Data written to data FIFO: Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.7 %
+Data written to data FIFO: ALS: 4.25787 lx
+Data written to data FIFO: Sound Magnitude: 63.9446
+Data written to data FIFO: Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.7 %
+Data written to data FIFO: ALS: 4.25787 lx
+Data written to data FIFO: Sound Magnitude: 63.1155
+Data written to data FIFO: Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.8 %
+Data written to data FIFO: ALS: 4.25787 lx
+Data written to data FIFO: Sound Magnitude: 63.3803
+Data written to data FIFO: Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.7 %
+Data written to data FIFO: ALS: 4.25787 lx
+Data written to data FIFO: Sound Magnitude: 72.5578
+Data written to data FIFO: Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.7 %
+Data written to data FIFO: ALS: 4.25787 lx
+Data written to data FIFO: Sound Magnitude: 71.0023
+Data written to data FIFO: Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.7 %
+Data written to data FIFO: ALS: 4.25787 lx
+Data written to data FIFO: Sound Magnitude: 62.5632
+Data written to data FIFO: Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.8 %
+Data written to data FIFO: ALS: 4.25787 lx
+Data written to data FIFO: Sound Magnitude: 62.7473
+Data written to data FIFO: Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.8 %
+Data written to data FIFO: ALS: 4.25787 lx
+Data written to data FIFO: Sound Magnitude: 63.5061
+Data written to data FIFO: Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.8 %
+Data written to data FIFO: ALS: 4.25787 lx
+Data written to data FIFO: Sound Magnitude: 60.6792
+Data written to data FIFO: Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.2 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 57.6774
+Data written to data FIFO: Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.2 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 63.5246
+Data written to data FIFO: Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.2 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 70.9978
+Data written to data FIFO:[22:24:21] Attempting to terminate child process with PID 10604
+Smoothed Light: 0.00, Smoothed Sound: 0.00, Rotary: 0
+Raw Data: Temperature: 23.3 CHumidity: 33.2 %ALS: 3.9912 lxSound Magnitude: 57.6774Temperature: 23.3 CHumidity: 33.2 %ALS: 3.9912 lxSound Magnitude: 63.5246
+Parsed Light Intensity: 0.00
+Parsed Sound Intensity: 0.13
+Smoothed Light: 0.00, Smoothed Sound: 0.01, Rotary: 0
+Raw Data: Temperature: 23.3 CHumidity: 33.2 %ALS: 3.9912 lxSound Magnitude: 70.9978Temperature: 23.3 CHumidity: 33.2 %ALS: 3.9912 lxSound Magnitude: 71.5107
+Parsed Light Intensity: 0.00
+Parsed Sound Intensity: 0.18
+Smoothed Light: 0.00, Smoothed Sound: 0.03, Rotary: 0
+Raw Data: Temperature: 23.3 CHumidity: 33.2 %ALS: 3.9912 lxSound Magnitude: 61.9728Temperature: 23.3 CHumidity: 33.2 %ALS: 3.9912 lxSound Magnitude: 72.4563
+Parsed Light Intensity: 0.00
+Parsed Sound Intensity: 0.15
+Smoothed Light: 0.00, Smoothed Sound: 0.04, Rotary: 0
+Raw Data: Temperature: 23.3 CHumidity: 33.2 %ALS: 3.9912 lxSound Magnitude: 63.3326Temperature: 23.3 CHumidity: 33.2 %ALS: 3.9912 lxSound Magnitude: 57.6327
+Parsed Light Intensity: 0.00
+Parsed Sound Intensity: 0.15
+Smoothed Light: 0.00, Smoothed Sound: 0.05, Rotary: 0
+Raw Data: Temperature: 23.4 CHumidity: 33.2 %ALS: 3.9912 lxSound Magnitude: 68.3867Temperature: 23.3 CHumidity: 33.2 %ALS: 3.9912 lxSound Magnitude: 70.9008
+Parsed Light Intensity: 0.00
+Parsed Sound Intensity: 0.17
+Smoothed Light: 0.00, Smoothed Sound: 0.07, Rotary: 0
+Raw Data: Temperature: 23.3 CHumidity: 33.2 %ALS: 3.9912 lxSound Magnitude: 66.3694Temperature: 23.3 CHumidity: 33.2 %ALS: 3.9912 lxSound Magnitude: 70.5676
+Parsed Light Intensity: 0.00
+Parsed Sound Intensity: 0.17
+Smoothed Light: 0.00, Smoothed Sound: 0.08, Rotary: 0
+Raw Data: Temperature: 23.3 CHumidity: 33.2 %ALS: 3.9912 lxSound Magnitude: 63.9207Temperature: 23.4 CHumidity: 33.2 %ALS: 3.9912 lxSound Magnitude: 67.6463
+Parsed Light Intensity: 0.00
+Parsed Sound Intensity: 0.16
+Smoothed Light: 0.00, Smoothed Sound: 0.08, Rotary: 0
+Raw Data: Temperature: 23.4 CHumidity: 33.2 %ALS: 3.9912 lxSound Magnitude: 63.5545Temperature: 23.4 CHumidity: 33.2 %ALS: 3.9912 lxSound Magnitude: 71.9174
+Parsed Light Intensity: 0.00
+Parsed Sound Intensity: 0.16
+Smoothed Light: 0.00, Smoothed Sound: 0.09, Rotary: 0
+Raw Data: Temperature: 23.4 CHumidity: 33.2 %ALS: 3.9912 lxSound Magnitude: 70.0538Temperature: 23.4 CHumidity: 33.2 %ALS: 3.9912 lxSound Magnitude: 62.0686
+Parsed Light Intensity: 0.00
+Parsed Sound Intensity: 0.18
+Smoothed Light: 0.00, Smoothed Sound: 0.10, Rotary: 0
+Raw Data: Temperature: 23.3 CHumidity: 33.2 %ALS: 3.9912 lxSound Magnitude: 75.457Temperature: 23.4 CHumidity: 33.2 %ALS: 3.9912 lxSound Magnitude: 81.9327
+Parsed Light Intensity: 0.00
+Parsed Sound Intensity: 0.20
+Smoothed Light: 0.00, Smoothed Sound: 0.11, Rotary: 0
+[22:24:21] Child process terminated successfully.
+[22:24:21] Sent command to FIFO: RESET
+[22:24:21] Sent command to FIFO: RESET ROTARY STREAM
+[22:24:21] Mode switched to: ./interactive_weather_rotary
+[22:24:21] Forked child process with PID 10606 for mode './interactive_weather_rotary'
+[22:24:21] Switching to ./interactive_weather_rotary mode...
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+[22:24:21] Attempting to terminate child process with PID 10606
+Raw Data: Temperature: 23.4 CHumidity: 33.2 %ALS: 3.9912 lxSound Magnitude: 64.6768
+Parsed Temperature: 23.400000
+Parsed Humidity: 33.200001
+Wind direction: 1
+Raw Data: Temperature: 23.4 CHumidity: 33.2 %ALS: 3.9912 lxSound Magnitude: 64.4724
+Parsed Temperature: 23.400000
+Parsed Humidity: 33.200001
+Wind direction: 1
+Wind direction: 1
+Wind direction: 1
+Wind direction: 1
+Wind direction: 1
+Wind direction: 1
+Wind direction: 1
+Wind direction: 1
+Wind direction: 1
+Wind direction: 1
+Wind direction: 1
+Wind direction: 1
+Wind direction: 1
+Wind direction: 1
+Wind direction: 1
+Wind direction: 1
+Wind direction: 1
+Wind direction: 1
+Wind direction: 1
+Wind direction: 1
+Wind direction: 1
+Wind direction: 1
+Wind direction: 1
+Wind direction: 1
+Wind direction: 1
+[22:24:21] Child process terminated successfully.
+[22:24:21] Sent command to FIFO: RESET
+[22:24:21] Sent command to FIFO: RESET OPTICAL TEMPERATURE MICROPHONE ROTARY STREAM
+[22:24:21] Mode switched to: ./coral_garden_rotary
+[22:24:21] Forked child process with PID 10608 for mode './coral_garden_rotary'
+[22:24:21] Switching to ./coral_garden_rotary mode...
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+Failed to write to data FIFO: Broken pipe
+Failed to write to data FIFO: Broken pipe
+Failed to write to data FIFO: Broken pipe
+Failed to write to data FIFO: Broken pipe
+Failed to write to data FIFO: Broken pipe
+Failed to write to data FIFO: Broken pipe
+Failed to write to data FIFO: Broken pipe
+Failed to write to data FIFO: Broken pipe
+Failed to write to data FIFO: Broken pipe
+Failed to write to data FIFO: Broken pipe
+Failed to write to data FIFO: Broken pipe
+Failed to write to data FIFO: Broken pipe
+Failed to write to data FIFO: Broken pipe
+Failed to write to data FIFO: Broken pipe
+Failed to write to data FIFO: Broken pipe
+Failed to write to data FIFO: Broken pipe
+Program starting...
+Set up UART...
+Setting up UART...
+UART setup complete.
+Initialize matrix...
+Main loop iteration start.
+Reading sensors from UART...
+Generating coral growth with light level: 0.000000
+Simulating water flow with the wave speed: 0.000000 and direction: 0
+Outputting matrix to the LED display...
+Matrix output complete.
+Main loop iteration end.
+Main loop iteration start.
+Reading sensors from UART...
+Generating coral growth with light level: 0.000000
+Simulating water flow with the wave speed: 0.000000 and direction: 0
+Outputting matrix to the LED display...
+Matrix output complete.
+Main loop iteration end.
+Main loop iteration start.
+Reading sensors from UART...
+Generating coral growth with light level: 0.000000
+Simulating water flow with the wave speed: 0.000000 and direction: 0
+Outputting matrix to the LED display...
+Matrix output complete.
+Main loop iteration end.
+Main loop iteration start.
+Reading sensors from UART...
+Generating coral growth with light level: 0.000000
+Simulating water flow with the wave speed: 0.000000 and direction: 0
+Outputting matrix to the LED display...
+Matrix output complete.
+Main loop iteration end.
+Main loop iteration start.
+Reading sensors from UART...
+Generating coral growth with light level: 0.000000
+Simulating water flow with the wave speed: 0.000000 and direction: 0
+Outputting matrix to the LED display...
+Matrix output complete.
+Main loop iteration end.
+Main loop iteration start.
+Reading sensors from UART...
+Generating coral growth with light level: 0.000000
+Simulating water flow with the wave speed: 0.000000 and direction: 0
+Outputting matrix to the LED display...
+Matrix output complete.
+Main loop iteration end.
+Main loop iteration start.
+Reading sensors from UART...
+Generating coral growth with light level: 0.000000
+Simulating water flow with the wave speed: 0.000000 and direction: 0
+Outputting matrix to the LED display...
+Matrix output complete.
+Main loop iteration end.
+Main loop iteration start.
+Reading sensors from UART...
+Generating coral growth with light level: 0.000000
+Simulating water flow with the wave speed: 0.000000 and direction: 0
+Outputting matrix to the LED display...
+Matrix output complete.
+Main loop iteration end.
+Main loop iteration start.
+Reading sensors from UART...
+Generating coral growth with light level: 0.000000
+Simulating water flow with the wave speed: 0.000000 and direction: 0
+Outputting matrix to the LED display...
+Matrix output complete.
+Main loop iteration end.
+Main loop iteration start.
+Reading sensors from UART...
+Generating coral growth with light level: 0.000000
+Simulating water flow with the wave speed: 0.000000 and direction: 0
+Outputting matrix to the LED display...
+Matrix output complete.
+Main loop iteration end.
+Main loop iteration start.
+Reading sensors from UART...
+Generating coral growth with light level: 0.000000
+Simulating water flow with the wave speed: 0.000000 and direction: 0
+Outputting matrix to the LED display...
+Matrix output complete.
+Main loop iteration end.
+Main loop iteration start.
+Reading sensors from UART...
+Generating coral growth with light level: 0.000000
+Simulating water flow with the wave speed: 0.000000 and direction: 0
+Outputting matrix to the LED display...
+Matrix output complete.
+Main loop iteration end.
+Main loop iteration start.
+Reading sensors from UART...
+Generating coral growth with light level: 0.000000
+Simulating water flow with the wave speed: 0.000000 and direction: 0
+Outputting matrix to the LED display...
+Matrix output complete.
+Main loop iteration end.
+Main loop iteration start.
+Reading sensors from UART...
+Generating coral growth with light level: 0.000000
+Simulating water flow with the wave speed: 0.000000 and direction: 0
+Outputting matrix to the LED display...
+Matrix output complete.
+Main loop iteration end.
+Main loop iteration start.
+Reading sensors from UART...
+Generating coral growth with light level: 0.000000
+Simulating water flow with the wave speed: 0.000000 and direction: 0
+Outputting matrix to the LED display...
+Matrix output complete.
+Main loop iteration end.
+Main loop iteration startFailed to write to data FIFO: Broken pipe
+Failed to write to data FIFO: Broken pipe
+Failed to write to data FIFO: Broken pipe
+Failed to write to data FIFO: Broken pipe
+Failed to write to data FIFO: Broken pipe
+Failed to write to data FIFO: Broken pipe
+Failed to write to data FIFO: Broken pipe
+Failed to write to data FIFO: Broken pipe
+[22:24:22] Attempting to terminate child process with PID 10608
+Failed to write to data FIFO: Broken pipe
+Failed to write to data FIFO: Broken pipe
+Failed to write to data FIFO: Broken pipe
+Failed to write to data FIFO: Broken pipe
+.
+Reading sensors from UART...
+Generating coral growth with light level: 0.000000
+Simulating water flow with the wave speed: 0.000000 and direction: 0
+Outputting matrix to the LED display...
+Matrix output complete.
+Main loop iteration end.
+Main loop iteration start.
+Reading sensors from UART...
+Generating coral growth with light level: 0.000000
+Simulating water flow with the wave speed: 0.000000 and direction: 0
+Outputting matrix to the LED display...
+Matrix output complete.
+Main loop iteration end.
+Main loop iteration start.
+Reading sensors from UART...
+Generating coral growth with light level: 0.000000
+Simulating water flow with the wave speed: 0.000000 and direction: 0
+Outputting matrix to the LED display...
+Matrix output complete.
+Main loop iteration end.
+Main loop iteration start.
+Reading sensors from UART...
+Generating coral growth with light level: 0.000000
+Simulating water flow with the wave speed: 0.000000 and direction: 0
+Outputting matrix to the LED display...
+Matrix output complete.
+Main loop iteration end.
+Main loop iteration start.
+Reading sensors from UART...
+Generating coral growth with light level: 0.000000
+Simulating water flow with the wave speed: 0.000000 and direction: 0
+Outputting matrix to the LED display...
+Matrix output complete.
+Main loop iteration end.
+Main loop iteration start.
+Reading sensors from UART...
+Generating coral growth with light level: 0.000000
+Simulating water flow with the wave speed: 0.000000 and direction: 0
+Outputting matrix to the LED display...
+Matrix output complete.
+Main loop iteration end.
+Main loop iteration start.
+Reading sensors from UART...
+Generating coral growth with light level: 0.000000
+Simulating water flow with the wave speed: 0.000000 and direction: 0
+Outputting matrix to the LED display...
+Interrupt received. Exiting...
+Matrix output complete.
+Main loop iteration end.
+Cleaning up and exiting...
+[22:24:22] Child process terminated successfully.
+[22:24:22] Sent command to FIFO: RESET
+[22:24:22] Sent command to FIFO: RESET ROTARY RIGHT_ENCODER STREAM
+[22:24:22] Mode switched to: ./2_player_pong
+[22:24:22] Forked child process with PID 10610 for mode './2_player_pong'
+[22:24:22] Switching to ./2_player_pong mode...
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+[22:24:24] Attempting to terminate child process with PID 10610
+[22:24:24] Child process terminated successfully.
+[22:24:24] Sent command to FIFO: RESET
+[22:24:24] Sent command to FIFO: RESET ROTARY BUTTON STREAM
+[22:24:24] Mode switched to: ./main_mode_rotary
+[22:24:24] Forked child process with PID 10618 for mode './main_mode_rotary'
+[22:24:24] Switching to ./main_mode_rotary mode...
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+Failed to write to data FIFO: Broken pipe
+Assigned 5 random modes: 8 9 13 12 15 
+ Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.2 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 71.5107
+Data written to data FIFO: Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.2 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 61.9728
+Data written to data FIFO: Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.2 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 72.4563
+Data written to data FIFO: Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.2 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 63.3326
+Data written to data FIFO: Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.2 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 57.6327
+Data written to data FIFO: Temperature: 23.4 C
+Data written to data FIFO: Humidity: 33.2 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 68.3867
+Data written to data FIFO: Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.2 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 70.9008
+Data written to data FIFO: Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.2 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 66.3694
+Data written to data FIFO: Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.2 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 70.5676
+Data written to data FIFO: Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.2 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 63.9207
+Data written to data FIFO: Temperature: 23.4 C
+Data written to data FIFO: Humidity: 33.2 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 67.6463
+Data written to data FIFO: Temperature: 23.4 C
+Data written to data FIFO: Humidity: 33.2 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 63.5545
+Data written to data FIFO: Temperature: 23.4 C
+Data written to data FIFO: Humidity: 33.2 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 71.9174
+Data written to data FIFO: Temperature: 23.4 C
+Data written to data FIFO: Humidity: 33.2 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 70.0538
+Data written to data FIFO: Temperature: 23.4 C
+Data written to data FIFO: Humidity: 33.2 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 62.0686
+Data written to data FIFO: Temperature: 23.3 C
+Data written to data FIFO: Humidity: 33.2 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 75.457
+Data written to data FIFO: Temperature: 23.4 C
+Data written to data FIFO: Humidity: 33.2 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 81.9327
+Data written to data FIFO: Temperature: 23.4 C
+Data written to data FIFO: Humidity: 33.2 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 64.6768
+Data written to data FIFO: Temperature: 23.4 C
+Data written to data FIFO: Humidity: 33.2 %
+Data written to data FIFO: ALS: 3.9912 lx
+Data written to data FIFO: Sound Magnitude: 64.4724
+Data written to data FIFO: Rotary Encoder Position: 1
+Data written to data FIFO: Rotary Encoder Position: 2
+Data written to data FIFO: Rotary Encoder Position: 3
+Data written to data FIFO: Rotary Encoder Position: 4
+Data written to data FIFO: Rotary Encoder Position: 5
+Data written to data FIFO: Rotary Encoder Position: 6
+Data written to data FIFO: Rotary Encoder Position: 7
+Data written to data FIFO: Rotary Encoder Position: 8
+Data written to data FIFO: Rotary Encoder Position: 9
+Data written to data FIFO: Rotary Encoder Position: 10
+Data written to data FIFO: Rotary Encoder Position: 11
+Data written[22:24:33] Child process 10618 exited with status 29952
+[22:24:33] Main mode exit => user requested mode index 17.
+[22:24:33] Sent command to FIFO: RESET
+[22:24:33] Sent command to FIFO: RESET ROTARY BUTTON STREAM
+[22:24:33] Mode switched to: ./main_mode_rotary
+[22:24:33] Forked child process with PID 10626 for './main_mode_rotary'
+[22:24:33] Switching to ./main_mode_rotary mode...
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+Failed to write to data FIFO: Broken pipe
+Assigned 5 random modes: 5 4 1 6 12 
+Received unexpected data: Button is released
+[22:24:44] Child process 10626 exited with status 30208
+[22:24:44] Main mode exit => user requested mode index 18.
+[22:24:44] Sent command to FIFO: RESET
+[22:24:44] Sent command to FIFO: RESET ROTARY BUTTON STREAM
+[22:24:44] Mode switched to: ./3d_labyrinth_control
+[22:24:44] Forked child process with PID 10640 for './3d_labyrinth_control'
+[22:24:44] Switching to ./3d_labyrinth_control mode...
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+[22:24:47] Attempting to terminate child process with PID 10640
+[22:24:47] Child process terminated successfully.
+[22:24:47] Sent command to FIFO: RESET
+[22:24:47] Sent command to FIFO: RESET
+[22:24:47] Mode switched to: ./thermal_display
+[22:24:47] Forked child process with PID 10648 for mode './thermal_display'
+[22:24:47] Switching to ./thermal_display mode...
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+[22:25:26] Exiting program. Performing cleanup...
+[22:25:26] Buffer process terminated.
+[22:25:26] Attempting to terminate child process with PID 10648
+[22:34:13] Buffer process launched with PID 13579.
+[22:34:13] Sent command to FIFO: RESET ROTARY BUTTON STREAM
+[22:34:13] Mode switched to: ./main_mode_rotary
+[22:34:13] Forked child process with PID 13581 for mode './main_mode_rotary'
+[22:34:13] Switching to ./main_mode_rotary mode...
+[22:34:13] Sent command to FIFO: GET_ALL_SENSORS
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+Assigned 5 random modes: 10 12 3 18 8 
+Received unexpected data: ALS: 4.7912 lxTemperature: 23.0 CHumidity: 32.8 %Sound Magnitude: 60.31
+[22:34:23] Child process 13581 exited with status 30208
+[22:34:23] Main mode exit => user requested mode index 18.
+[22:34:23] Sent command to FIFO: RESET
+[22:34:23] Sent command to FIFO: RESET ROTARY BUTTON STREAM
+[22:34:23] Mode switched to: ./3d_labyrinth_control
+[22:34:23] Forked child process with PID 13643 for './3d_labyrinth_control'
+[22:34:23] Switching to ./3d_labyrinth_control mode...
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+[22:34:26] Attempting to terminate child process with PID 13643
+[22:34:26] Child process terminated successfully.
+[22:34:26] Sent command to FIFO: RESET
+[22:34:26] Sent command to FIFO: RESET
+[22:34:26] Mode switched to: ./thermal_display
+[22:34:26] Forked child process with PID 13651 for mode './thermal_display'
+[22:34:26] Switching to ./thermal_display mode...
+Suggestion: to slightly improve display update, add
+	isolcpus=3
+at the end of /boot/cmdline.txt and reboot (see README.md)
+[22:34:26] Child process 13651 exited with status 0
+[22:34:38] Exiting program. Performing cleanup...
+[22:34:38] Buffer process terminated.
+[22:34:38] No active child process to terminate.
+[22:34:38] Cleanup complete. Program exited.
+Magick: quitting due to signal 1 (SIGHUP) "Hangup"...

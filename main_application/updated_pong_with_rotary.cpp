@@ -1,4 +1,4 @@
-#include "/home/beamboard/rpi-rgb-led-matrix/include/led-matrix-c.h"
+#include "led-matrix-c.h"
 #include <signal.h>
 #include <stdio.h>
 #include <string.h>

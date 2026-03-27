@@ -550,9 +550,15 @@ int main() {
         }
     }
 
-    struct gpiod_chip *chip;
-    struct gpiod_line *button_line;
-    struct gpiod_line *led_line;
+    struct gpiod_chip *chip = NULL;
+    struct gpiod_line_request *button_request = NULL;
+    struct gpiod_line_request *led_request = NULL;
+    const unsigned int button_offset = 25;
+    const unsigned int led_offset = 24;
+
+    struct gpiod_request_config *req_cfg = NULL;
+    struct gpiod_line_config *line_cfg = NULL;
+    struct gpiod_line_settings *line_settings = NULL;
 
     chip = gpiod_chip_open("/dev/gpiochip0");
     if (!chip) {
@@ -560,50 +566,100 @@ int main() {
         exit(1);
     }
 
-    button_line = gpiod_chip_get_line(chip, 25);
-    if (!button_line) {
-        perror("Get GPIO line for Button failed");
+    req_cfg = gpiod_request_config_new();
+    line_cfg = gpiod_line_config_new();
+    line_settings = gpiod_line_settings_new();
+    if (!req_cfg || !line_cfg || !line_settings) {
+        perror("Failed to allocate GPIO request objects for button line");
+        gpiod_request_config_free(req_cfg);
+        gpiod_line_config_free(line_cfg);
+        gpiod_line_settings_free(line_settings);
         gpiod_chip_close(chip);
         exit(1);
     }
 
-    int ret = gpiod_line_request_input_flags(button_line, "master", GPIOD_LINE_REQUEST_FLAG_BIAS_PULL_UP);
-    if (ret < 0) {
-        perror("Request line as input failed");
+    gpiod_request_config_set_consumer(req_cfg, "master");
+
+    if (gpiod_line_settings_set_direction(line_settings, GPIOD_LINE_DIRECTION_INPUT) < 0 ||
+        gpiod_line_settings_set_bias(line_settings, GPIOD_LINE_BIAS_PULL_UP) < 0 ||
+        gpiod_line_config_add_line_settings(line_cfg, &button_offset, 1, line_settings) < 0) {
+        perror("Failed to configure button GPIO line");
+        gpiod_request_config_free(req_cfg);
+        gpiod_line_config_free(line_cfg);
+        gpiod_line_settings_free(line_settings);
         gpiod_chip_close(chip);
         exit(1);
     }
 
-    led_line = gpiod_chip_get_line(chip, 24);
-    if (!led_line) {
-        perror("Get GPIO line for LED failed");
-        gpiod_line_release(button_line);
+    button_request = gpiod_chip_request_lines(chip, req_cfg, line_cfg);
+    gpiod_request_config_free(req_cfg);
+    gpiod_line_config_free(line_cfg);
+    gpiod_line_settings_free(line_settings);
+    req_cfg = NULL;
+    line_cfg = NULL;
+    line_settings = NULL;
+
+    if (!button_request) {
+        perror("Request button GPIO line failed");
         gpiod_chip_close(chip);
         exit(1);
     }
 
-    ret = gpiod_line_request_output(led_line, "master", 0);
-    if (ret < 0) {
-        perror("Request line as output failed");
-        gpiod_line_release(button_line);
+    req_cfg = gpiod_request_config_new();
+    line_cfg = gpiod_line_config_new();
+    line_settings = gpiod_line_settings_new();
+    if (!req_cfg || !line_cfg || !line_settings) {
+        perror("Failed to allocate GPIO request objects for LED line");
+        gpiod_request_config_free(req_cfg);
+        gpiod_line_config_free(line_cfg);
+        gpiod_line_settings_free(line_settings);
+        gpiod_line_request_release(button_request);
         gpiod_chip_close(chip);
         exit(1);
     }
 
-    int prev_val = 1;
+    gpiod_request_config_set_consumer(req_cfg, "master");
+
+    if (gpiod_line_settings_set_direction(line_settings, GPIOD_LINE_DIRECTION_OUTPUT) < 0 ||
+        gpiod_line_settings_set_output_value(line_settings, GPIOD_LINE_VALUE_INACTIVE) < 0 ||
+        gpiod_line_config_add_line_settings(line_cfg, &led_offset, 1, line_settings) < 0) {
+        perror("Failed to configure LED GPIO line");
+        gpiod_request_config_free(req_cfg);
+        gpiod_line_config_free(line_cfg);
+        gpiod_line_settings_free(line_settings);
+        gpiod_line_request_release(button_request);
+        gpiod_chip_close(chip);
+        exit(1);
+    }
+
+    led_request = gpiod_chip_request_lines(chip, req_cfg, line_cfg);
+    gpiod_request_config_free(req_cfg);
+    gpiod_line_config_free(line_cfg);
+    gpiod_line_settings_free(line_settings);
+
+    if (!led_request) {
+        perror("Request LED GPIO line failed");
+        gpiod_line_request_release(button_request);
+        gpiod_chip_close(chip);
+        exit(1);
+    }
+
+    enum gpiod_line_value prev_val = GPIOD_LINE_VALUE_ACTIVE;
 
     while (!exit_requested) {
         // ---------------------------------------------------------------------
         // MODIFIED: Skip hardware button read if we're currently in main_mode_rotary
         // ---------------------------------------------------------------------
         if (strcmp(modes[currentMode], "./main_mode_rotary") != 0) {
-            int val = gpiod_line_get_value(button_line);
-            if (val < 0) {
+            enum gpiod_line_value val = gpiod_line_request_get_value(button_request, button_offset);
+            if (val == GPIOD_LINE_VALUE_ERROR) {
                 perror("Read line input failed");
             } else {
-                if (val == 0 && prev_val == 1) {
+                if (val == GPIOD_LINE_VALUE_INACTIVE && prev_val == GPIOD_LINE_VALUE_ACTIVE) {
                     // "Hardware" button is pressed => switch to next mode
-                    gpiod_line_set_value(led_line, 1);
+                    if (gpiod_line_request_set_value(led_request, led_offset, GPIOD_LINE_VALUE_ACTIVE) < 0) {
+                        perror("Set LED active failed");
+                    }
 
                     if (strcmp(modes[currentMode], "./updated_ollama") == 0) {
                         terminateOllamaMode();
@@ -641,7 +697,9 @@ int main() {
                                                   child_pid, modes[currentMode]);
                         }
                     }
-                    gpiod_line_set_value(led_line, 0);
+                    if (gpiod_line_request_set_value(led_request, led_offset, GPIOD_LINE_VALUE_INACTIVE) < 0) {
+                        perror("Set LED inactive failed");
+                    }
                 }
                 prev_val = val;
             }
@@ -742,8 +800,8 @@ int main() {
 
     logTimestampedMessage("Exiting program. Performing cleanup...");
 
-    gpiod_line_release(button_line);
-    gpiod_line_release(led_line);
+    gpiod_line_request_release(button_request);
+    gpiod_line_request_release(led_request);
     gpiod_chip_close(chip);
 
     close(fifo_fd);
