@@ -2,6 +2,7 @@ name: Build Main Application
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  LIBGPIOD_VERSION: 2.2.1
 
 on:
   workflow_dispatch:
@@ -34,11 +35,27 @@ jobs:
             git \
             curl \
             pkg-config \
-            libgpiod-dev \
             libsqlite3-dev \
             libcurl4-openssl-dev \
             graphicsmagick \
             libgraphicsmagick++-dev
+
+      - name: Install libgpiod v2 from source
+        run: |
+          set -euo pipefail
+          GPIOD_TARBALL="libgpiod-${LIBGPIOD_VERSION}.tar.xz"
+          GPIOD_URL="https://mirrors.edge.kernel.org/pub/software/libs/libgpiod/${GPIOD_TARBALL}"
+
+          curl -fsSL "${GPIOD_URL}" -o "${RUNNER_TEMP}/${GPIOD_TARBALL}"
+          tar -xf "${RUNNER_TEMP}/${GPIOD_TARBALL}" -C "${RUNNER_TEMP}"
+
+          cd "${RUNNER_TEMP}/libgpiod-${LIBGPIOD_VERSION}"
+          ./configure --prefix=/usr/local
+          make -j"$(nproc)"
+          sudo make install
+          sudo ldconfig
+
+          pkg-config --modversion libgpiod
 
       - name: Install WiringPi
         run: |
@@ -51,6 +68,11 @@ jobs:
         run: |
           set -e
           git clone --depth 1 https://github.com/hzeller/rpi-rgb-led-matrix.git "${RUNNER_TEMP}/rpi-rgb-led-matrix"
+
+      - name: Clean prebuilt artifacts from repository checkout
+        working-directory: main_application
+        run: |
+          make clean-all
 
       - name: Build all binaries
         working-directory: main_application
