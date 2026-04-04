@@ -29,25 +29,19 @@ jobs:
             exit 1
           fi
 
-      - name: Checkout fork repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-
-      - name: Configure git identity
+      - name: Initialize local git repository
         run: |
+          git init .
           git config user.name "fork-sync-bot"
           git config user.email "fork-sync-bot@users.noreply.github.com"
 
-      - name: Set authenticated remotes
+      - name: Configure remotes and checkout fork branch
         run: |
-          git remote set-url origin "https://x-access-token:${AUTH_TOKEN}@github.com/${{ github.repository }}.git"
-          if git remote get-url upstream >/dev/null 2>&1; then
-            git remote set-url upstream "https://x-access-token:${AUTH_TOKEN}@github.com/${UPSTREAM_REPO}.git"
-          else
-            git remote add upstream "https://x-access-token:${AUTH_TOKEN}@github.com/${UPSTREAM_REPO}.git"
-          fi
+          git remote add origin "https://x-access-token:${AUTH_TOKEN}@github.com/${{ github.repository }}.git"
+          git remote add upstream "https://x-access-token:${AUTH_TOKEN}@github.com/${UPSTREAM_REPO}.git"
+
+          git fetch origin "${DEFAULT_BRANCH}" --tags
+          git checkout -B "${DEFAULT_BRANCH}" "origin/${DEFAULT_BRANCH}"
 
       - name: Fetch upstream branches and tags
         run: |
