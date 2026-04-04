@@ -1,0 +1,61 @@
+name: Sync Fork From Upstream
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+      UPSTREAM_REPO: ${{ vars.UPSTREAM_REPO }}
+    steps:
+      - name: Validate configuration
+        run: |
+          if [[ -z "${UPSTREAM_REPO}" ]]; then
+            echo "Missing repository variable UPSTREAM_REPO (format: owner/repo)."
+            exit 1
+          fi
+          if [[ -z "${{ secrets.SYNC_TOKEN }}" ]]; then
+            echo "Missing secret SYNC_TOKEN."
+            exit 1
+          fi
+
+      - name: Checkout fork repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Configure git identity
+        run: |
+          git config user.name "fork-sync-bot"
+          git config user.email "fork-sync-bot@users.noreply.github.com"
+
+      - name: Set authenticated remotes
+        run: |
+          git remote set-url origin "https://x-access-token:${{ secrets.SYNC_TOKEN }}@github.com/${{ github.repository }}.git"
+          if git remote get-url upstream >/dev/null 2>&1; then
+            git remote set-url upstream "https://x-access-token:${{ secrets.SYNC_TOKEN }}@github.com/${UPSTREAM_REPO}.git"
+          else
+            git remote add upstream "https://x-access-token:${{ secrets.SYNC_TOKEN }}@github.com/${UPSTREAM_REPO}.git"
+          fi
+
+      - name: Fetch upstream branches and tags
+        run: |
+          git fetch upstream --prune --tags
+
+      - name: Fast-forward default branch
+        run: |
+          git checkout "${DEFAULT_BRANCH}"
+          git merge --ff-only "upstream/${DEFAULT_BRANCH}"
+
+      - name: Push branch and tags to fork
+        run: |
+          git push origin "${DEFAULT_BRANCH}"
+          git push origin --tags
