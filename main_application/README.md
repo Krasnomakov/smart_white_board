@@ -33,13 +33,42 @@ Logs are written to:
 
 ## Prerequisites (Raspberry Pi)
 
-- `rpi-rgb-led-matrix` checked out locally
+- `rpi-rgb-led-matrix` checked out locally (see install/location section below)
 - C/C++ toolchain (`g++`, `make`)
 - `libgpiod` (for GPIO in `master_script`)
 - `WiringPi` (used by `main_mode_rotary.cpp`)
 - GraphicsMagick++ and libcurl (for image/weather modes)
 - SQLite3 (for `db_manager.cpp`)
 - Python 3 with required packages (`requests`, `buienradar`, `numpy`, `scipy`, `colour`, `smbus`)
+
+### Install `rpi-rgb-led-matrix` and required location
+
+This project depends on the external open-source repository:
+
+- https://github.com/hzeller/rpi-rgb-led-matrix
+
+Clone it as a sibling of `main_application` inside your `LED-Board` folder:
+
+```bash
+cd /home/pi/Documents/LED-Board
+git clone https://github.com/hzeller/rpi-rgb-led-matrix.git
+```
+
+Expected layout:
+
+```text
+/home/pi/Documents/LED-Board/
+  main_application/
+  rpi-rgb-led-matrix/
+```
+
+The default build scripts in this folder expect:
+
+```bash
+export RGBMATRIX_DIR=/home/pi/Documents/LED-Board/rpi-rgb-led-matrix
+```
+
+If you place `rpi-rgb-led-matrix` somewhere else, set `RGBMATRIX_DIR` to that absolute path before building.
 
 Example Debian/Raspberry Pi OS packages:
 
@@ -67,7 +96,7 @@ pip3 install requests buienradar
 Set your LED matrix library location (adjust path as needed):
 
 ```bash
-export RGBMATRIX_DIR=/home/pi/Documents/rpi-rgb-led-matrix
+export RGBMATRIX_DIR=/home/pi/Documents/LED-Board/rpi-rgb-led-matrix
 ```
 
 ### 1) Build everything (recommended)
