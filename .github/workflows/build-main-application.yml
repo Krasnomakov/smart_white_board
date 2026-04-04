@@ -1,0 +1,60 @@
+name: Build Main Application
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - main_application/**
+      - .github/workflows/build-main-application.yml
+  pull_request:
+    paths:
+      - main_application/**
+      - .github/workflows/build-main-application.yml
+
+jobs:
+  build-main-application:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential \
+            g++ \
+            make \
+            git \
+            curl \
+            pkg-config \
+            libgpiod-dev \
+            libsqlite3-dev \
+            libcurl4-openssl-dev \
+            graphicsmagick \
+            libgraphicsmagick++-dev
+
+      - name: Install WiringPi
+        run: |
+          set -e
+          git clone --depth 1 https://github.com/WiringPi/WiringPi.git "${RUNNER_TEMP}/WiringPi"
+          cd "${RUNNER_TEMP}/WiringPi"
+          sudo ./build
+
+      - name: Clone rpi-rgb-led-matrix
+        run: |
+          set -e
+          git clone --depth 1 https://github.com/hzeller/rpi-rgb-led-matrix.git "${RUNNER_TEMP}/rpi-rgb-led-matrix"
+
+      - name: Build all binaries
+        working-directory: main_application
+        env:
+          RGBMATRIX_DIR: ${{ runner.temp }}/rpi-rgb-led-matrix
+        run: |
+          bash build_all.sh
