@@ -9,6 +9,8 @@
 ![SQLite](https://img.shields.io/badge/SQLite-Logs%20%26%20Progress-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
 ![GraphicsMagick](https://img.shields.io/badge/GraphicsMagick-Image%20Processing-5C2D91?style=for-the-badge)
 ![libcurl](https://img.shields.io/badge/libcurl-Weather%20%2F%20NASA%20Fetch-0F4C81?style=for-the-badge)
+![GitHub Actions](https://img.shields.io/badge/workflow-build--main--application.yml-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/workflow-sync--upstream--fork.yml-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
 
 This folder contains the Raspberry Pi LED-matrix runtime, including:
 
@@ -46,6 +48,29 @@ Logs are written to:
 - GraphicsMagick++ and libcurl (for image/weather modes)
 - SQLite3 (for `db_manager.cpp`)
 - Python 3 with required packages (`requests`, `buienradar`, `numpy`, `scipy`, `colour`, `smbus`)
+
+### `libgpiod` v2 requirement (`master_script.cpp`)
+
+`master_script.cpp` uses the `libgpiod` v2 API. Version `2.x` is required.
+
+Check version:
+
+```bash
+pkg-config --modversion libgpiod
+```
+
+If your distro provides `1.x`, install `2.2.1` from source:
+
+```bash
+curl -fsSL https://mirrors.edge.kernel.org/pub/software/libs/libgpiod/libgpiod-2.2.1.tar.xz -o /tmp/libgpiod-2.2.1.tar.xz
+cd /tmp
+tar -xf libgpiod-2.2.1.tar.xz
+cd libgpiod-2.2.1
+./configure --prefix=/usr/local
+make -j"$(nproc)"
+sudo make install
+sudo ldconfig
+```
 
 ### Install `rpi-rgb-led-matrix` and required location
 
@@ -96,6 +121,11 @@ Python dependencies:
 ```bash
 pip3 install requests buienradar
 ```
+
+## GitHub workflows
+
+- `build-main-application.yml` builds this folder in GitHub Actions and installs `libgpiod` v2.2.1 from source in CI.
+- `sync-upstream-fork.yml` syncs fork updates from upstream and can run on push to `main`, schedule, or manual dispatch.
 
 ## Build
 

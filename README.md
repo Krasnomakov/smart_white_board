@@ -9,6 +9,8 @@
 ![libgpiod](https://img.shields.io/badge/libgpiod-GPIO-2E7D32?style=for-the-badge)
 ![GraphicsMagick](https://img.shields.io/badge/GraphicsMagick-Image%20Pipeline-5C2D91?style=for-the-badge)
 ![libcurl](https://img.shields.io/badge/libcurl-HTTP%20Fetch-0F4C81?style=for-the-badge)
+![GitHub Actions](https://img.shields.io/badge/workflow-build--main--application.yml-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/workflow-sync--upstream--fork.yml-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
 
 Multi-component Raspberry Pi + Pico project for sensor-driven LED matrix visuals.
 
@@ -16,12 +18,18 @@ Multi-component Raspberry Pi + Pico project for sensor-driven LED matrix visuals
 - Raspberry Pi Pico/Pico W streams live sensor and input data over USB serial.
 - Modes include games, visualizations, weather/NASA panels, and thermal display.
 
+Demo: https://youtu.be/y5JOEidExKE
+
 ## Repository layout
 
 - [main_application](main_application/README.md): primary runtime, process orchestration, mode binaries.
 - [rpi_pico_code](rpi_pico_code/README.md): CircuitPython firmware for USB sensor stream.
-- [grid-eye-demo](grid-eye-demo/README.md): AMG8833 thermal sensor Python demo.
 - [rpi-rgb-led-matrix](rpi-rgb-led-matrix/README.md): included LED matrix driver library source.
+
+## GitHub workflows
+
+- [build-main-application.yml](.github/workflows/build-main-application.yml): GitHub-hosted build runner that installs dependencies, installs `libgpiod` v2.2.1 from source, clones `rpi-rgb-led-matrix`, and runs `main_application/build_all.sh`.
+- [sync-upstream-fork.yml](.github/workflows/sync-upstream-fork.yml): fork sync workflow that can run on manual dispatch, schedule, and push updates to `main`.
 
 ## End-to-end architecture
 
@@ -52,8 +60,29 @@ Environment target:
 
 ```bash
 sudo apt update
-sudo apt install -y g++ make libgpiod-dev libsqlite3-dev libcurl4-openssl-dev graphicsmagick libgraphicsmagick++-dev python3-pip
+sudo apt install -y g++ make libsqlite3-dev libcurl4-openssl-dev graphicsmagick libgraphicsmagick++-dev python3-pip
 pip3 install requests buienradar
+```
+
+1b) Install `libgpiod` v2 (required by `master_script`):
+
+Check installed version:
+
+```bash
+pkg-config --modversion libgpiod
+```
+
+If version is older than `2.x`, install from source:
+
+```bash
+curl -fsSL https://mirrors.edge.kernel.org/pub/software/libs/libgpiod/libgpiod-2.2.1.tar.xz -o /tmp/libgpiod-2.2.1.tar.xz
+cd /tmp
+tar -xf libgpiod-2.2.1.tar.xz
+cd libgpiod-2.2.1
+./configure --prefix=/usr/local
+make -j"$(nproc)"
+sudo make install
+sudo ldconfig
 ```
 
 2) Optional, for rotary-menu mode support:
@@ -104,20 +133,13 @@ Protocol details, commands, and pin map: [rpi_pico_code/README.md](rpi_pico_code
 
 Current runtime includes 20 mode executables configured in master_script.
 
-## Thermal camera demo
-
-Separate AMG8833 demo is available in [grid-eye-demo](grid-eye-demo/README.md), with:
-
-- [grid-eye-demo/thermal_cam.py](grid-eye-demo/thermal_cam.py)
-- [grid-eye-demo/driver.py](grid-eye-demo/driver.py)
-- [grid-eye-demo/Seeed_AMG8833.py](grid-eye-demo/Seeed_AMG8833.py)
 
 ## Troubleshooting
 
 - Pico not found on /dev/ttyACM0: check if it enumerated as /dev/ttyACM1 and update UART path in main app.
 - Modes switch but show no input: verify buffer process binary exists as main_application/buffer_process.
 - Build errors around matrix libs: confirm RGBMATRIX_DIR points to valid rpi-rgb-led-matrix checkout.
-- Weather/NASA modes fail: re-check Python/network dependencies and API reachability.
+- Weather/NASA modes fail: re-check Python/network dependencies and API reachability. NASA disabled space photos...
 
 ## License
 
