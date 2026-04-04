@@ -30,6 +30,25 @@ jobs:
             exit 1
           fi
 
+      - name: Validate upstream token access
+        run: |
+          set -e
+          API_URL="https://api.github.com/repos/${UPSTREAM_REPO}"
+          HTTP_CODE=$(curl -sS -o /tmp/upstream_repo.json -w "%{http_code}" \
+            -H "Authorization: Bearer ${AUTH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "${API_URL}")
+
+          if [[ "${HTTP_CODE}" != "200" ]]; then
+            echo "SYNC_TOKEN cannot access upstream repo ${UPSTREAM_REPO} (HTTP ${HTTP_CODE})."
+            echo "For fine-grained PAT:"
+            echo "- Resource owner should be Smart-White-Board (or a principal with access to that org repo)."
+            echo "- Repository access must include LED-Board."
+            echo "- Repository permission Contents must include Read."
+            echo "If your org enforces SSO, authorize the token for Smart-White-Board."
+            exit 1
+          fi
+
       - name: Initialize local git repository
         run: |
           git init .
