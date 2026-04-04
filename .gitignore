@@ -10,6 +10,31 @@
 *.so
 *.a
 
+# main_application compiled binaries (no extension)
+main_application/2_mice_1_cat
+main_application/2_player_pong
+main_application/3d_labyrinth_control
+main_application/brick_breaker
+main_application/buffer_process
+main_application/cat_n_mouse
+main_application/coral_garden_rotary
+main_application/db_manager
+main_application/dynamic_fireworks_rotary
+main_application/falling_sand
+main_application/falling_sand_rotary_color
+main_application/interactive_weather_rotary
+main_application/main_mode_rotary
+main_application/master_script
+main_application/nasa_image
+main_application/sensor_driven_visuals_7
+main_application/snake_in_labyrinth
+main_application/stars
+main_application/thermal_display
+main_application/updated_ollama
+main_application/updated_pong_with_rotary
+main_application/wave_gen
+main_application/weather_info_panel
+
 # Runtime logs and captured data
 main_application/logs/
 main_application/data_logs/
