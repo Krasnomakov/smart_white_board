@@ -14,6 +14,7 @@ jobs:
     env:
       DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
       UPSTREAM_REPO: ${{ vars.UPSTREAM_REPO != '' && vars.UPSTREAM_REPO || 'Smart-White-Board/LED-Board' }}
+      FORK_TOKEN: ${{ github.token }}
       AUTH_TOKEN: ${{ secrets.SYNC_TOKEN }}
     steps:
       - name: Validate configuration
@@ -25,7 +26,7 @@ jobs:
           if [[ -z "${AUTH_TOKEN}" ]]; then
             echo "Missing secret SYNC_TOKEN."
             echo "Create it in: Settings > Secrets and variables > Actions > Secrets"
-            echo "Required scope: read access to ${UPSTREAM_REPO} and write access to this fork."
+            echo "Required scope: read access to ${UPSTREAM_REPO}."
             exit 1
           fi
 
@@ -37,7 +38,7 @@ jobs:
 
       - name: Configure remotes and checkout fork branch
         run: |
-          git remote add origin "https://x-access-token:${AUTH_TOKEN}@github.com/${{ github.repository }}.git"
+          git remote add origin "https://x-access-token:${FORK_TOKEN}@github.com/${{ github.repository }}.git"
           git remote add upstream "https://x-access-token:${AUTH_TOKEN}@github.com/${UPSTREAM_REPO}.git"
 
           git fetch origin "${DEFAULT_BRANCH}" --tags
