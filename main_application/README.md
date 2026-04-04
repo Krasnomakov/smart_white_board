@@ -17,6 +17,12 @@ This folder contains the Raspberry Pi LED-matrix runtime, including:
 - game/visualization modes (`*.cpp`, `*.cc`)
 - helper Python scripts for weather/NASA/Grid-Eye data
 
+## Version
+
+- Current version: `1.0.0`
+- Version file: `VERSION`
+- Release tag: `main_application-v1.0.0`
+
 ## Architecture (runtime flow)
 
 1. `master_script` creates FIFOs:

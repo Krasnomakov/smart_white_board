@@ -2,6 +2,12 @@
 
 This folder contains the Pico firmware that streams live sensor and input data over USB serial to the Raspberry Pi 4 main application.
 
+## Version
+
+- Current version: 1.0.0
+- Version file: VERSION
+- Release tag: rpi_pico_code-v1.0.0
+
 ## Purpose
 
 - Pico/Pico W reads connected sensors and inputs.
