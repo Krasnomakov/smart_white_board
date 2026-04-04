@@ -1,1 +1,19 @@
 .DS_Store
+
+# C/C++ object files
+*.o
+*.obj
+
+# Compiled binaries/libraries
+*.out
+*.exe
+*.so
+*.a
+
+# Runtime logs and captured data
+main_application/logs/
+main_application/data_logs/
+
+# Python caches
+__pycache__/
+*.py[cod]
