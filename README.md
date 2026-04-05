@@ -45,7 +45,7 @@ These were intended to feed environmental data to a RAG server, but this pipelin
 ## GitHub workflows
 
 - [build-main-application.yml](.github/workflows/build-main-application.yml): GitHub-hosted build runner that installs dependencies, installs `libgpiod` v2.2.1 from source, clones `rpi-rgb-led-matrix`, and runs `main_application/build_all.sh`.
-- [sync-upstream-fork.yml](.github/workflows/sync-upstream-fork.yml): fork sync workflow that can run on manual dispatch, schedule, and push updates to `main`.
+- [sync-upstream-fork.yml](.github/workflows/sync-upstream-fork.yml): fork-side workflow to pull updates from upstream (requires `SYNC_TOKEN` with upstream read access).
 - [mirror-to-fork.yml](.github/workflows/mirror-to-fork.yml): runs in `Smart-White-Board/LED-Board` on push to `main` and mirrors branch/tags to the target repository.
 
 Required settings for mirror workflow (`Smart-White-Board/LED-Board`):
