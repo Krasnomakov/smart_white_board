@@ -11,6 +11,7 @@
 ![libcurl](https://img.shields.io/badge/libcurl-HTTP%20Fetch-0F4C81?style=for-the-badge)
 ![GitHub Actions](https://img.shields.io/badge/workflow-build--main--application.yml-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/workflow-sync--upstream--fork.yml-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/workflow-mirror--to--fork.yml-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
 
 Multi-component Raspberry Pi + Pico project for sensor-driven LED matrix visuals.
 
@@ -45,6 +46,12 @@ These were intended to feed environmental data to a RAG server, but this pipelin
 
 - [build-main-application.yml](.github/workflows/build-main-application.yml): GitHub-hosted build runner that installs dependencies, installs `libgpiod` v2.2.1 from source, clones `rpi-rgb-led-matrix`, and runs `main_application/build_all.sh`.
 - [sync-upstream-fork.yml](.github/workflows/sync-upstream-fork.yml): fork sync workflow that can run on manual dispatch, schedule, and push updates to `main`.
+- [mirror-to-fork.yml](.github/workflows/mirror-to-fork.yml): runs in `Smart-White-Board/LED-Board` on push to `main` and mirrors branch/tags to the target repository.
+
+Required settings for mirror workflow (`Smart-White-Board/LED-Board`):
+
+- Secret: `FORK_MIRROR_TOKEN` (must have write access to target repo).
+- Optional repository variable: `MIRROR_TARGET_REPO` (defaults to `Krasnomakov/smart_white_board`).
 
 ## End-to-end architecture
 

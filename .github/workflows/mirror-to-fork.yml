@@ -1,0 +1,46 @@
+name: Mirror LED-Board To Target Repo
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mirror:
+    if: ${{ github.repository == 'Smart-White-Board/LED-Board' }}
+    runs-on: ubuntu-latest
+    env:
+      TARGET_REPO: ${{ vars.MIRROR_TARGET_REPO != '' && vars.MIRROR_TARGET_REPO || 'Krasnomakov/smart_white_board' }}
+      MIRROR_TOKEN: ${{ secrets.FORK_MIRROR_TOKEN }}
+    steps:
+      - name: Validate mirror configuration
+        run: |
+          if [[ -z "${MIRROR_TOKEN}" ]]; then
+            echo "Missing secret FORK_MIRROR_TOKEN."
+            echo "Set it in: Settings > Secrets and variables > Actions > Secrets"
+            echo "Token must have write access to ${TARGET_REPO}."
+            exit 1
+          fi
+
+      - name: Checkout source repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: false
+          persist-credentials: false
+
+      - name: Configure git identity
+        run: |
+          git config user.name "mirror-bot"
+          git config user.email "mirror-bot@users.noreply.github.com"
+
+      - name: Push main and tags to mirror repo
+        run: |
+          set -euo pipefail
+          git remote add mirror "https://x-access-token:${MIRROR_TOKEN}@github.com/${TARGET_REPO}.git"
+          git push mirror "HEAD:refs/heads/main"
+          git push mirror --tags
