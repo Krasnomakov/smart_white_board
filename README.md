@@ -1,4 +1,4 @@
-# Ambient AIoT LED Board
+# Smart White Board with Sensors and RGB Matrix Output
 
 ![C++](https://img.shields.io/badge/C%2B%2B-17-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white)
@@ -19,6 +19,19 @@ Multi-component Raspberry Pi + Pico project for sensor-driven LED matrix visuals
 - Modes include games, visualizations, weather/NASA panels, and thermal display.
 
 Demo: https://youtu.be/y5JOEidExKE
+
+## AI prototype status (not in demo)
+
+The public demo currently focuses on sensor-driven RGB matrix behavior and does not include AI services in the runtime path.
+
+AI/RAG was prototyped separately on another Raspberry Pi 5 in the same network, where `LightRAG` and `Ollama` were hosted. An alternative integration path using the OpenAI API was also tested.
+
+Supporting scripts exist and are workable but currently manual:
+
+- [main_application/db_manager.cpp](main_application/db_manager.cpp): parses sensor logs into SQLite for downstream retrieval.
+- [main_application/clone_db.sh](main_application/clone_db.sh): transfers database snapshots across nodes.
+
+These were intended to feed environmental data to a RAG server, but this pipeline is not automated in the current version. Requires SQLite installed. A future release may prioritize cloud deployment over local-only AI hosting.
 
 ## Repository layout
 

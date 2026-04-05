@@ -1,4 +1,4 @@
-# LED Board Main Application
+# Smart White Board Main Application
 
 ![C++](https://img.shields.io/badge/C%2B%2B-17-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white)
@@ -105,7 +105,7 @@ Example Debian/Raspberry Pi OS packages:
 
 ```bash
 sudo apt update
-sudo apt install -y g++ make libgpiod-dev libsqlite3-dev libcurl4-openssl-dev graphicsmagick libgraphicsmagick++-dev python3-pip python3-scipy python3-colour python3-smbus
+sudo apt install -y g++ make libsqlite3-dev libcurl4-openssl-dev graphicsmagick libgraphicsmagick++-dev python3-pip python3-scipy python3-colour python3-smbus
 ```
 
 Optional (for `main_mode_rotary.cpp`):
@@ -235,6 +235,22 @@ It creates/uses tables:
 
 - `SensorReadings`
 - `LogProgress`
+
+## AI prototype status (not in demo)
+
+AI/RAG integration is not part of the current public demo runtime.
+
+What was prototyped:
+
+- A separate Raspberry Pi 5 on the same network hosted `LightRAG` + `Ollama`.
+- An alternative OpenAI API path was also tested.
+
+Current script status:
+
+- `db_manager.cpp` and `clone_db.sh` are workable for preparing/transferring log data.
+- The environmental-data-to-RAG flow is still manual and not automated in this version.
+
+Future direction under consideration: cloud-first deployment rather than only local AI hosting.
 
 ## Known caveats
 
