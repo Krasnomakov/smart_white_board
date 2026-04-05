@@ -18,7 +18,9 @@ Multi-component Raspberry Pi + Pico project for sensor-driven LED matrix visuals
 - Raspberry Pi Pico/Pico W streams live sensor and input data over USB serial.
 - Modes include games, visualizations, weather/NASA panels, and thermal display.
 
-Demo: https://youtu.be/y5JOEidExKE
+> **Demo:** **[Watch the project demo on YouTube](https://youtu.be/y5JOEidExKE)**
+
+![Smart White Board demo setup](IMG_0148.jpeg)
 
 ## AI prototype status (not in demo)
 
